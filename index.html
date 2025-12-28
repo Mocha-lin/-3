@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>bbb ANALYTICS - 戰情室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg-color: #FDFBF7; --sidebar-bg: #F5F2EB; --accent-color: #8B7355; --border-color: #E5E0D8; }
+        body { background-color: var(--bg-color); font-family: -apple-system, sans-serif; height: 100vh; overflow: hidden; }
+        .sidebar { width: 20%; background: var(--sidebar-bg); border-right: 1px solid #DCD6C9; }
+        .content { width: 80%; overflow-y: auto; background: rgba(255,255,255,0.5); }
+        .section-card { background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .table-header { background-color: #EFEBE0; font-size: 0.8rem; font-weight: 600; }
+        /* 讓 iPad 滾動更順滑 */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #D1C7B7; border-radius: 10px; }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <header class="bg-[#ECE8DE] h-12 flex items-center px-6 border-b border-[#DCD6C9] shrink-0 justify-between">
+        <div class="font-bold text-lg tracking-widest text-[#5A4A42]">bbb ANALYTICS</div>
+        <div class="flex gap-4">
+            <button onclick="fetchGitHubData()" class="text-xs bg-white border border-[#D1C7B7] px-3 py-1 rounded hover:bg-gray-50">
+                <i class="fas fa-sync-alt mr-1"></i> 雲端同步
+            </button>
+            <button onclick="openJsonInput()" class="text-xs bg-[#8B7355] text-white px-3 py-1 rounded">
+                <i class="fas fa-plus mr-1"></i> 手動匯入
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="sidebar flex flex-col p-3">
+            <input type="text" id="searchInput" oninput="renderSidebar()" placeholder="搜尋代號..." 
+                   class="w-full bg-white border border-[#D1C7B7] rounded px-3 py-2 text-sm mb-4 focus:outline-none">
+            <div id="stockListContainer" class="flex-1 overflow-y-auto space-y-2"></div>
+        </aside>
+
+        <main class="content p-8" id="mainContent">
+            <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-chart-line text-6xl mb-4"></i>
+                <p>請選擇股票或同步雲端數據</p>
+            </div>
+
+            <div id="reportContainer" class="hidden space-y-6">
+                <div class="border-b-2 border-[#8B7355] pb-4 flex justify-between items-end">
+                    <div>
+                        <h1 class="text-3xl font-bold"><span id="stockId" class="text-[#8B7355] mr-2"></span> <span id="stockName"></span></h1>
+                        <p class="text-xs text-gray-400 mt-2">最後更新：<span id="updateDate"></span></p>
+                    </div>
+                    <div class="text-right">
+                        <div id="priceDisplay" class="text-4xl font-mono font-bold"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="section-card">
+                        <h3 class="font-bold border-b pb-2 mb-4">🤖 AI 深度解析</h3>
+                        <p id="aiAnalysis" class="text-sm leading-relaxed text-gray-600 italic"></p>
+                    </div>
+                    <div class="section-card">
+                        <h3 class="font-bold border-b pb-2 mb-4">EPS 趨勢預估</h3>
+                        <div class="h-48"><canvas id="epsChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="jsonModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-xl shadow-2xl p-6">
+            <h2 class="text-xl font-bold text-[#8B7355] mb-4">匯入 bbb 模型數據 (JSON)</h2>
+            <textarea id="jsonInput" class="w-full h-64 border p-4 font-mono text-xs bg-gray-50 rounded mb-4" placeholder="在此貼上 Colab 產出的 JSON..."></textarea>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeJsonInput()" class="px-4 py-2 text-gray-500">取消</button>
+                <button onclick="processImport()" class="px-6 py-2 bg-[#8B7355] text-white rounded">確認匯入</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let db = {}; 
+        let currentChart = null;
+
+        // 1. 自動讀取雲端數據 (GitHub Actions 產出的成果)
+        async function fetchGitHubData() {
+            try {
+                const res = await fetch('./data.json?t=' + Date.now());
+                const cloudData = await res.json();
+                db = { ...db, ...cloudData };
+                saveToLocal();
+                renderSidebar();
+                alert("☁️ 雲端同步完成！");
+            } catch (e) {
+                console.log("尚無雲端檔案，等待手動匯入");
+            }
+        }
+
+        // 2. 手動匯入功能 (保留您要的新增按鈕功能)
+        function openJsonInput() { document.getElementById('jsonModal').classList.remove('hidden'); }
+        function closeJsonInput() { document.getElementById('jsonModal').classList.add('hidden'); }
+
+        function processImport() {
+            const raw = document.getElementById('jsonInput').value;
+            try {
+                const imported = JSON.parse(raw);
+                // 支援單個股票或多個股票匯入
+                if (imported.id) {
+                    db[imported.id] = imported;
+                } else {
+                    db = { ...db, ...imported };
+                }
+                saveToLocal();
+                renderSidebar();
+                closeJsonInput();
+            } catch (e) { alert("JSON 格式有誤"); }
+        }
+
+        function saveToLocal() { localStorage.setItem('bbb_invest_db', JSON.stringify(db)); }
+        function loadFromLocal() {
+            const saved = localStorage.getItem('bbb_invest_db');
+            if (saved) db = JSON.parse(saved);
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('stockListContainer');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            container.innerHTML = '';
+
+            Object.values(db).forEach(s => {
+                if (search && !s.id.includes(search)) return;
+                const el = document.createElement('div');
+                el.className = "p-3 bg-white border border-transparent rounded shadow-sm cursor-pointer hover:border-[#8B7355] transition-all";
+                el.innerHTML = `<div class="font-bold">${s.id}</div><div class="text-xs text-[#8B7355]">${s.name || '分析報告'}</div>`;
+                el.onclick = () => showReport(s.id);
+                container.appendChild(el);
+            });
+        }
+
+        function showReport(id) {
+            const s = db[id];
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('reportContainer').classList.remove('hidden');
+            document.getElementById('stockId').innerText = id;
+            document.getElementById('stockName').innerText = s.name || '';
+            document.getElementById('updateDate').innerText = s.lastUpdated || '';
+            document.getElementById('priceDisplay').innerText = s.price ? `$${s.price}` : (s.basicInfo ? s.basicInfo.price : '--');
+            
+            // AI 分析內容兼容
+            const analysisText = s.technical?.analysis || s.technical || "尚無資料";
+            document.getElementById('aiAnalysis').innerText = analysisText;
+
+            if (s.eps_trend) renderEpsChart(s.eps_trend);
+        }
+
+        function renderEpsChart(data) {
+            const ctx = document.getElementById('epsChart').getContext('2d');
+            if (currentChart) currentChart.destroy();
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.year),
+                    datasets: [{ label: 'EPS', data: data.map(d => d.eps), borderColor: '#8B7355', tension: 0.3 }]
+                },
+                options: { maintainAspectRatio: false }
+            });
+        }
+
+        window.onload = () => {
+            loadFromLocal();
+            fetchGitHubData(); // 啟動時自動同步一次
+        };
+    </script>
+</body>
+</html>
