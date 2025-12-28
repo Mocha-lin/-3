@@ -1,8 +1,8 @@
 name: Auto Update bbb Data
 on:
   schedule:
-    - cron: '0 1 * * *' # 每天早上執行
-  workflow_dispatch: # 允許手動點擊執行按鈕
+    - cron: '0 1 * * *'
+  workflow_dispatch: 
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,17 +10,19 @@ jobs:
       - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
-        with: { python-version: '3.9' }
-      - name: Install
-        run: pip install yfinance google-generativeai
-      - name: Run
+        with:
+          python-version: '3.10' # 從 3.9 改為 3.10
+      - name: Install dependencies
+        run: |
+          pip install yfinance google-generativeai
+      - name: Run analysis
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python app.py
-      - name: Commit
+      - name: Commit and Push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data.json
-          git commit -m "Update Data" || echo "No changes"
+          git commit -m "Auto update data.json" || echo "No changes to commit"
           git push
