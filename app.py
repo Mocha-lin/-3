@@ -2,84 +2,138 @@ import yfinance as yf
 import google.generativeai as genai
 import json
 import os
-from datetime import datetime
+import datetime
+import time
+import argparse
+import sys
 
-# 從 GitHub Secrets 讀取金鑰
-MY_API_KEY = os.getenv("GEMINI_API_KEY") 
-# 你想要自動追蹤的股票清單
-STOCK_LIST = ["2330", "2317", "2454"] 
+# --- 設定區 ---
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('models/gemini-1.5-flash')
 
-def run_automated_analysis():
-    # 檢查 API KEY 是否存在
-    if not MY_API_KEY:
-        print("❌ 錯誤: 找不到 GEMINI_API_KEY，請檢查 GitHub Secrets 設定。")
-        return
+# 預設清單 (如果 data.json 不存在時使用)
+DEFAULT_TARGETS = [
+    {"id": "2330", "name": "台積電", "category": "半導體代工"},
+    {"id": "2454", "name": "聯發科", "category": "半導體上游"}
+]
 
-    genai.configure(api_key=MY_API_KEY)
-    
-    # 尋找可用模型 (自動偵測)
-    valid_model_name = "models/gemini-1.5-flash"
-    try:
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods and 'flash' in m.name:
-                valid_model_name = m.name
-                break
-    except Exception:
-        pass
-    
-    model = genai.GenerativeModel(valid_model_name)
-    all_results = {}
+# AI 分析模板
+PROMPT_TEMPLATE = """
+你是一位專業分析師。請分析 {name} ({stock_id})。
+數據：股價 {price}, 漲跌 {change_pct}%
+新聞：
+{news_summary}
 
-    for sid in STOCK_LIST:
-        print(f"📦 正在分析 {sid}...")
-        full_id = f"{sid}.TW"
-        ticker = yf.Ticker(full_id)
-        
-        # --- 增強版 EPS 抓取 (防止 NoneType 錯誤導致程式崩潰) ---
-        eps_trend = []
+請回傳嚴格 JSON (無 Markdown)，格式如下：
+{{
+  "moat": {{ "status": "...", "description": "..." }},
+  "technical": {{ "analysis": "...", "marketStatus": "...", "correctionC": "...", "bollinger": {{ "status": "...", "description": "..." }}, "predictions": {{ "entryZone": "..." }} }}
+}}
+"""
+
+def get_current_list():
+    """讀取現有的 data.json 取得目前的股票清單"""
+    if os.path.exists('data.json'):
         try:
-            # 使用更穩定的方式檢查數據
-            earnings = getattr(ticker, 'earnings', None)
-            if earnings is not None and hasattr(earnings, 'empty') and not earnings.empty:
-                for idx, row in earnings.iterrows():
-                    eps_trend.append({"year": str(idx), "eps": row.get('Earnings', 0)})
-            else:
-                print(f"ℹ️ {sid} 目前沒有可用的 EPS 歷史數據。")
-        except Exception as e:
-            print(f"⚠️ 抓取 {sid} EPS 時發生跳過: {e}")
-        # -----------------------------------------------------
-
-        # 抓取現價
-        price = 0
-        try:
-            price = ticker.fast_info.get('last_price', 0)
+            with open('data.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                # 提取 id, name, category 欄位即可
+                return [{"id": d["id"], "name": d.get("name", d["id"]), "category": d.get("category", "未分類")} for d in data]
         except:
-            price = 0
+            return DEFAULT_TARGETS
+    return DEFAULT_TARGETS
+
+def get_stock_data(target):
+    sid = target["id"]
+    print(f"🚀 分析中: {sid} ...")
+    try:
+        ticker = yf.Ticker(f"{sid}.TW")
+        fast = ticker.fast_info
+        price = fast.get('last_price', 0)
         
-        # 呼叫 AI 產出戰情室分析
-        try:
-            prompt = f"你是分析師 bbb，針對 {full_id} 現價 {price} 提供 JSON 分析，包含：trend_status, calendar(未來三個月事件), technical(技術簡評)。格式請嚴格遵守 JSON。"
-            response = model.generate_content(prompt)
-            # 清洗 AI 回傳的字串
-            clean_json = response.text.replace('```json', '').replace('```', '').strip()
-            ai_data = json.loads(clean_json)
+        # 若抓不到價格，可能代號錯誤或下市
+        if price == 0: 
+            print(f"⚠️ 找不到 {sid} 的價格，跳過")
+            return None
 
-            all_results[sid] = {
-                **ai_data,
-                "id": sid,
-                "name": ticker.info.get('longName', sid),
-                "price": round(price, 2),
-                "eps_trend": eps_trend,
-                "lastUpdated": datetime.now().strftime("%Y-%m-%d %H:%M")
-            }
-        except Exception as e:
-            print(f"❌ AI 分析 {sid} 時出錯: {e}")
+        change_pct = ((price - fast.get('previous_close', 0)) / fast.get('previous_close', 1)) * 100
+        
+        # 處理新聞
+        news_text = ""
+        news_list = []
+        for n in ticker.news[:3]:
+            title = n.get('title', '')
+            ts = n.get('providerPublishTime', 0)
+            date_s = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+            news_text += f"- {title}\n"
+            news_list.append({"date": date_s, "title": title, "type": "neutral"})
 
-    # 確保寫入正確命名的 data.json
-    print(f"💾 正在儲存數據到 data.json...")
-    with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(all_results, f, ensure_ascii=False, indent=2)
-    print("✅ 全部完成！")
+        # AI 分析
+        ai_data = {}
+        if GEMINI_API_KEY:
+            try:
+                # 簡單獲取名稱，若無則用代號
+                name = target.get('name', ticker.info.get('longName', sid))
+                
+                prompt = PROMPT_TEMPLATE.format(name=name, stock_id=sid, price=round(price,2), change_pct=round(change_pct,2), news_summary=news_text)
+                res = model.generate_content(prompt)
+                ai_data = json.loads(res.text.replace("```json","").replace("```",""))
+            except Exception as e:
+                print(f"AI Error: {e}")
+
+        # 模擬圖表數據 (為了前端不壞掉，維持結構)
+        hist = ticker.history(period="1y")
+        # 簡單取樣
+        prices = [round(x, 1) for x in hist['Close'].resample('ME').last().tail(12).tolist()]
+        dates = [d.strftime('%Y-%m') for d in hist['Close'].resample('ME').last().tail(12).index]
+
+        return {
+            "id": sid,
+            "name": ticker.info.get('longName', target.get('name', sid)), # 更新為正確名稱
+            "category": target.get('category', "新加入"),
+            "lastUpdated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "basicInfo": { "price": f"{price:.2f}", "change": f"{price - fast.get('previous_close', 0):+.2f}", "changePercent": f"{change_pct:+.2f}%" },
+            "news": news_list,
+            "moat": ai_data.get("moat", {"status": "-", "description": "分析中..."}),
+            "technical": ai_data.get("technical", {"analysis": "資料不足", "bollinger": {"description": "-"}}),
+            "financials": { "revenue": [], "peRiver": {"currentPE": "N/A"} }, # 簡化結構
+            "chartsData": { "peRiverData": { "dates": dates, "price": prices, "pe20": [p*1.1 for p in prices], "pe16": [p*0.9 for p in prices], "pe12": [p*0.7 for p in prices] }, "revenueTrend": [] },
+            "dividend": { "info": "-", "projectedReturn": "-" },
+            "memo": ""
+        }
+    except Exception as e:
+        print(f"❌ {sid} 錯誤: {e}")
+        return None
 
 if __name__ == "__main__":
-    run_automated_analysis()
+    # 1. 讀取目前清單
+    current_list = get_current_list()
+    
+    # 2. 檢查是否有外部傳入的新增指令 (GitHub Actions 傳入)
+    # 格式預期: python app.py --add 2330
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--add', type=str, help='新增股票代號')
+    args = parser.parse_args()
+
+    if args.add:
+        new_id = args.add.strip()
+        # 檢查是否已存在
+        if not any(s['id'] == new_id for s in current_list):
+            print(f"🆕 收到新增指令: {new_id}")
+            current_list.insert(0, {"id": new_id, "name": new_id, "category": "新加入"})
+        else:
+            print(f"ℹ️ {new_id} 已在清單中")
+
+    # 3. 執行更新
+    final_data = []
+    for target in current_list:
+        data = get_stock_data(target)
+        if data:
+            final_data.append(data)
+        time.sleep(2) # 避免 API 限制
+
+    # 4. 存檔 (這會覆寫 data.json，下次讀取時就會包含新股票)
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(final_data, f, ensure_ascii=False, indent=2)
+        print("✅ data.json 更新完成")
