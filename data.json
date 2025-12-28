@@ -1,155 +1,83 @@
-{
-  "2330": {
-    "analysis_note": "【重要提示】現價 '0' 為無效輸入，任何股價為零的情況都意味著該股票已停止交易、下市或資料錯誤。以下分析將在缺乏有效價格數據的前提下，針對各項目提供說明或基於一般情況的推測，但無法進行基於實際價格的判斷。",
-    "trend_status": {
-      "status": "無法判斷",
-      "reason": "由於現價為 0，無法進行任何趨勢判斷。有效的股價是分析多空趨勢、均線排列、價格通道以及判斷市場情緒的基礎。在真實市場中，2330.TW 作為權值股，其趨勢通常受基本面、產業景氣及國際資金流向影響。"
-    },
-    "calendar": [
-      {
-        "date": "2024-07-18",
-        "event": "第二季法說會及財報公布",
-        "notes": "台積電（2330.TW）通常會在此日期前後公布其第二季度的營收、獲利、毛利率等關鍵財務數據，並提供第三季度及全年度的營運展望和資本支出計畫。市場會高度關注其在先進製程（N3、N2）的進展、AI晶片需求、CoWoS產能擴充狀況以及總體經濟對半導體產業的影響。",
-        "impact_on_price_context": "此為重大事件，若公布結果優於預期或展望樂觀，將對股價產生正面激勵作用；反之則可能引發股價壓力。然而，由於現價為0，無法量化或預測具體影響。"
-      },
-      {
-        "date": "2024-08-XX",
-        "event": "七月營收公布",
-        "notes": "台積電每月營收通常於次月10日左右公布。此為觀察公司短期營運狀況的領先指標，可與市場預期進行比對。",
-        "impact_on_price_context": "連續數月營收的成長或衰退趨勢，是判斷公司營運動能的重要參考。然而，由於現價為0，無法量化或預測具體影響。"
-      },
-      {
-        "date": "2024-09-XX",
-        "event": "除息交易日（第三季配息）",
-        "notes": "台積電通常採季配息。確切的除息交易日會提前公告，投資人需留意股息配發與股價除息的關係。",
-        "impact_on_price_context": "除息日股價將會扣除現金股利而調整，若能在短時間內填息，通常被視為市場對公司前景看好的訊號。然而，由於現價為0，無法量化或預測具體影響。"
-      },
-      {
-        "date": "2024-09-XX",
-        "event": "八月營收公布",
-        "notes": "同七月營收，為觀察公司營運狀況的月度更新。",
-        "impact_on_price_context": "作為短期營運指標，可與產業趨勢相互驗證。然而，由於現價為0，無法量化或預測具體影響。"
-      }
-    ],
-    "technical": {
-      "analysis_status": "無法進行",
-      "reason": "由於缺乏有效的現價、歷史交易數據（K線圖）及成交量，無法進行任何技術分析。技術分析的基礎是價格、成交量與時間的關係，這些數據對於計算各種指標、識別模式至關重要。",
-      "typical_elements_if_data_available": [
-        "移動平均線 (MA) 趨勢（如5日、20日、60日線）判斷短中長期趨勢。",
-        "布林通道 (Bollinger Bands) 判斷股價波動區間及超買超賣情況。",
-        "相對強弱指數 (RSI) 評估股價的超買或超賣狀態。",
-        "MACD (Moving Average Convergence Divergence) 判斷股價動能及趨勢轉折點。",
-        "支撐位 (Support) 與壓力位 (Resistance) 判斷股價的關鍵轉折點或整理區間。",
-        "成交量變化與價格走勢的關係，判斷市場參與熱度及趨勢的有效性。"
-      ]
-    },
-    "id": "2330",
-    "name": "Taiwan Semiconductor Manufacturing Company Limited",
-    "price": 0,
-    "eps_trend": [],
-    "lastUpdated": "2025-12-28 04:33"
-  },
-  "2317": {
-    "analyst": "bbb",
-    "stock_code": "2317.TW",
-    "analysis_date": "2024-07-30",
-    "trend_status": {
-      "overall_trend": "Bullish",
-      "momentum": "Strong Upward",
-      "drivers": [
-        "Significant increase in demand for AI servers and related components, where Foxconn is a key supplier.",
-        "Strategic diversification into electric vehicles (EVs) and semiconductors showing promising progress.",
-        "Robust core electronics manufacturing business continues to benefit from major client product cycles.",
-        "Positive market sentiment driven by strong Q1 2024 earnings and optimistic guidance."
-      ],
-      "sentiment": "Highly Positive, with sustained institutional and retail interest."
-    },
-    "calendar": {
-      "notes": "Exact dates are subject to company announcements. These are typical windows for significant events based on historical patterns and current market expectations for the next three months (August, September, October).",
-      "future_three_months_events": [
-        {
-          "event_type": "Q2 Earnings Announcement",
-          "expected_period": "Late August - Early September",
-          "impact_potential": "High - Will provide critical updates on AI server revenue, overall operational performance, and potentially revised full-year guidance. Strong focus on AI-related growth."
-        },
-        {
-          "event_type": "Key Client Product Launches (e.g., Apple iPhone Series)",
-          "expected_period": "September",
-          "impact_potential": "Medium to High - As a major assembler for Apple, new product launches directly influence Foxconn's order volumes and production schedules in the subsequent quarters. Market will watch for production ramp-up commentary."
-        },
-        {
-          "event_type": "Investor Conferences / Technology Forums",
-          "expected_period": "Throughout the period",
-          "impact_potential": "Medium - Opportunities for management to provide updates on strategic initiatives (EVs, AI, semiconductor packaging) and engage with investors, potentially influencing short-term sentiment."
-        },
-        {
-          "event_type": "Monthly Revenue Report Announcements",
-          "expected_period": "Early August, Early September, Early October",
-          "impact_potential": "Low to Medium - These reports offer a more granular view of operational performance. Consistent strong numbers can reinforce positive sentiment."
-        }
-      ]
-    },
-    "technical": {
-      "short_term": "Bullish (potentially overbought)",
-      "medium_term": "Bullish",
-      "long_term": "Strong Bullish",
-      "summary": "2317.TW is currently in a strong and well-defined bullish trend across all timeframes. The stock has recently surged to multi-year highs, demonstrating robust buying interest. It consistently trades above its key moving averages (e.g., 50-day and 200-day EMAs), which are upward sloping and reinforcing the trend. Volume has often increased on up-days, confirming the strength of the moves. Short-term indicators like RSI may occasionally show overbought conditions, suggesting a potential for minor pullbacks or consolidation in the very near term, but these are typically seen as healthy within a strong uptrend. Previous resistance levels have been decisively broken and are now expected to act as strong support.",
-      "key_levels": {
-        "immediate_support": "Dynamically located around recent consolidation points and key moving averages (e.g., 5-day or 10-day EMA).",
-        "major_support": "Previous breakout levels (e.g., around 160-170 TWD) should offer robust support.",
-        "resistance": "Recent high prices are the primary resistance points, followed by psychological levels."
-      }
-    },
-    "disclaimer": "This analysis is provided by analyst bbb for informational purposes only, based on publicly available data and market observations as of the analysis date. It does not constitute investment advice or a recommendation to buy, sell, or hold any security. Investors should conduct their own thorough research and consult with a financial professional before making any investment decisions. Past performance is not indicative of future results.",
-    "id": "2317",
-    "name": "Hon Hai Precision Industry Co., Ltd.",
-    "price": 0,
-    "eps_trend": [],
-    "lastUpdated": "2025-12-28 04:33"
-  },
-  "2454": {
-    "stock_code": "2454.TW",
-    "analyst": "bbb",
-    "disclaimer": "由於您提供的現價為 0，本分析無法基於即時市場數據進行，因此所有趨勢與技術評估均為基於聯發科（2454.TW）在正常交易狀況下的歷史行為和一般市場預期。請將此分析視為參考，並非即時的買賣建議。",
-    "trend_status": {
-      "status": "無法即時判斷",
-      "notes": "鑑於提供的現價為 0，無法進行即時趨勢判斷。在正常交易情況下，聯發科（2454.TW）作為全球IC設計產業的龍頭之一，其股價趨勢通常受全球經濟景氣、半導體產業週期、智慧型手機及新興應用（如AI、車用）市場表現以及公司新產品發表影響。歷史上，聯發科常被視為具成長潛力的標的，但亦需留意產業競爭與庫存週期風險。若有正常報價，需進一步觀察其相對於主要移動平均線的位置、成交量變化及產業新聞來判斷當前趨勢方向。"
-    },
-    "calendar": [
-      {
-        "event": "第二季財報公布與法說會",
-        "date_range": "約7月底至8月初（已發生或即將發生，但因現價0不影響未來三個月的市場反應）",
-        "impact": "影響市場對公司獲利能力、營運展望及庫存狀況的判斷，進而影響股價。"
-      },
-      {
-        "event": "新產品發表或技術展示",
-        "date_range": "未來三個月內可能不定期發生",
-        "impact": "推出新一代手機晶片、AI相關晶片或車用解決方案等，可能帶來市場對其競爭力及未來營收成長的期待，刺激股價表現。"
-      },
-      {
-        "event": "全球科技產業展覽/峰會參與",
-        "date_range": "依據各展覽時程，例如 IFA (9月初), 可能有重要策略或新品發布",
-        "impact": "聯發科常藉由參與國際展會，展示最新技術與產品，有助於提升品牌能見度及市場信心。"
-      },
-      {
-        "event": "第三季財報公布與法說會準備",
-        "date_range": "約10月底至11月初",
-        "impact": "市場將開始預期並消化第三季營運數據，相關預期可能提前反映在股價上。"
-      },
-      {
-        "event": "產業分析師/投資人會議",
-        "date_range": "不定期",
-        "impact": "與法人溝通公司營運策略及展望，可能釋出對未來營收或產品進度的訊息，影響法人評價。"
-      }
-    ],
-    "technical": {
-      "status": "無法進行具體評估",
-      "notes": "由於現價為 0，無法進行具體的技術分析。然而，若聯發科（2454.TW）處於正常交易狀態，分析師會著重以下幾點：\n\n1.  **移動平均線 (MA):** 觀察短期（如5日、10日）與長期（如60日、200日）均線的排列與交叉情況，判斷多空趨勢。長期均線向上且短期均線位於上方通常視為多頭格局。需特別留意股價是否站穩關鍵均線（如季線、半年線）。\n2.  **相對強弱指標 (RSI):** 觀察RSI是否處於超買（>70）或超賣（<30）區間，判斷股價是否有反轉壓力或支撐，以及是否存在背離現象。\n3.  **MACD 指標:** 觀察MACD柱狀圖與訊號線的交叉，判斷動能的強弱與趨勢的轉變。黃金交叉通常視為買入訊號，死亡交叉則為賣出訊號。\n4.  **支撐與壓力區間:** 根據歷史高低點判斷潛在的股價支撐與壓力位，這些區間常是多空拉鋸的關鍵。\n5.  **成交量:** 成交量應配合價格走勢。放大成交量伴隨股價突破通常視為趨勢確立的訊號；無量上漲或下跌則需謹慎看待。"
-    },
-    "id": "2454",
-    "name": "MediaTek Inc.",
-    "price": 0,
-    "eps_trend": [],
-    "lastUpdated": "2025-12-28 04:33"
-  }
-}
+def get_stock_data(target):
+    sid = target["id"]
+    print(f"🚀 分析中: {sid} ...")
+    try:
+        ticker = yf.Ticker(f"{sid}.TW")
+        
+        # --- 修正開始：股價抓取邏輯 ---
+        price = 0
+        change_pct = 0
+        
+        # 1. 嘗試抓即時股價
+        try:
+            fast = ticker.fast_info
+            price = fast.get('last_price', 0)
+            prev_close = fast.get('previous_close', 0)
+            if price and prev_close:
+                change_pct = ((price - prev_close) / prev_close) * 100
+        except:
+            pass
+
+        # 2. 如果即時股價失敗 (是 0 或 None)，改抓歷史收盤價 (備援)
+        if not price or price == 0:
+            print(f"⚠️ {sid} 即時股價為 0 (可能是休市)，改抓歷史收盤價...")
+            hist_recent = ticker.history(period="5d") # 抓最近5天
+            if not hist_recent.empty:
+                price = hist_recent['Close'].iloc[-1] # 最後一筆收盤價
+                # 簡單計算漲跌 (跟前一天比)
+                if len(hist_recent) >= 2:
+                    prev = hist_recent['Close'].iloc[-2]
+                    change_pct = ((price - prev) / prev) * 100
+        # --- 修正結束 ---
+
+        # 若還是 0，真的沒救了，跳過
+        if price == 0: 
+            print(f"❌ 無法取得 {sid} 任何價格數據，跳過")
+            return None
+        
+        # 處理新聞
+        news_text = ""
+        news_list = []
+        try:
+            for n in ticker.news[:3]:
+                title = n.get('title', '')
+                ts = n.get('providerPublishTime', 0)
+                date_s = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+                news_text += f"- {title}\n"
+                news_list.append({"date": date_s, "title": title, "type": "neutral"})
+        except:
+            pass
+
+        # AI 分析
+        ai_data = {}
+        if GEMINI_API_KEY:
+            try:
+                name = target.get('name', ticker.info.get('longName', sid))
+                # 這裡把修正後的 price 傳給 AI，它就不會說是 0 了
+                prompt = PROMPT_TEMPLATE.format(name=name, stock_id=sid, price=round(price,2), change_pct=round(change_pct,2), news_summary=news_text)
+                res = model.generate_content(prompt)
+                ai_data = json.loads(res.text.replace("```json","").replace("```",""))
+            except Exception as e:
+                print(f"AI Error: {e}")
+
+        # 模擬圖表數據
+        hist = ticker.history(period="1y")
+        if not hist.empty:
+            prices = [round(x, 1) for x in hist['Close'].resample('ME').last().tail(12).tolist()]
+            dates = [d.strftime('%Y-%m') for d in hist['Close'].resample('ME').last().tail(12).index]
+        else:
+            prices = []
+            dates = []
+
+        return {
+            "id": sid,
+            "name": ticker.info.get('longName', target.get('name', sid)),
+            "category": target.get('category', "新加入"),
+            "lastUpdated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "basicInfo": { "price": f"{price:.2f}", "change": "0.00", "changePercent": f"{change_pct:+.2f}%" },
+            "news": news_list,
+            "moat": ai_data.get("moat", {"status": "-", "description": "分析中..."}),
+            "technical": ai_data.get("technical", {"analysis": "資料不足", "bollinger": {"description": "-"}}),
+            "financials": { "revenue": [], "peRiver": {"currentPE": "N/A"} },
+            "chartsData": { "peRiverData": { "dates": dates, "price": prices, "pe20": [p*1.1 for p in prices], "pe16": [p*0.9 for p in prices], "pe12": [p*0.7 for p in prices] }, "revenueTrend": [] },
+            "dividend": { "info": "-", "p
