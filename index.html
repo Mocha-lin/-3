@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>bbb 投資戰情室 (Ultimate)</title>
+    <!-- Libs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --bg: #F9F7F2; --accent: #8B7355; --text: #374151; --border: #E5E7EB; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100vh; overflow: hidden; }
+        
+        /* 玻璃面板 */
+        .glass-panel { background: white; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 8px; }
+        .header-title { font-weight: 800; color: #4B5563; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.05em; }
+        
+        /* 表格樣式 */
+        .data-table th { @apply bg-gray-50 text-xs text-gray-500 uppercase font-bold p-2 text-right sticky top-0; }
+        .data-table td { @apply p-2 text-sm border-b border-gray-100 text-right font-mono outline-none transition duration-200; }
+        /* 可編輯欄位提示 */
+        .editable:hover { background-color: #FFFBF0; cursor: text; box-shadow: inset 0 0 0 1px #8B7355; }
+        .editable:focus { background-color: #FFFFFF; box-shadow: inset 0 0 0 2px #8B7355; }
+
+        /* 樣式標記 */
+        .fact-row td { color: #111827; font-weight: 600; }
+        .est-row td { color: #2563EB; font-weight: 700; font-style: italic; background-color: #F8FAFC; }
+        .est-tag { font-size: 0.6rem; background: #2563EB; color: white; padding: 1px 3px; border-radius: 2px; margin-left: 4px; vertical-align: middle; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+        
+        /* Loading Overlay */
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 99; display: none; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(2px); }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <!-- Loading -->
+    <div id="processingOverlay" class="loading-overlay">
+        <div class="text-[#8B7355] text-5xl mb-4"><i class="fas fa-satellite-dish fa-spin"></i></div>
+        <h2 class="text-xl font-bold">呼叫 bbb 戰情室...</h2>
+        <p class="text-gray-500 mt-2">AI 正在分析 <span id="targetStock" class="font-bold text-[#8B7355]"></span></p>
+        <p class="text-xs text-gray-400 mt-4 animate-pulse">預計耗時 1-2 分鐘，請勿關閉視窗</p>
+    </div>
+
+    <!-- JSON Modal -->
+    <div id="jsonModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white w-4/5 h-4/5 rounded-xl shadow-2xl flex flex-col p-6 animate-fade-in-up">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-[#8B7355]"><i class="fas fa-file-import mr-2"></i> 手動匯入 bbb 報告</h3>
+                <button onclick="toggleModal('jsonModal')" class="text-3xl text-gray-400 hover:text-black">&times;</button>
+            </div>
+            <div class="text-xs text-gray-500 mb-2 bg-gray-50 p-2 rounded">
+                💡 將 Gemini 產生的 JSON 貼在此處。這將會覆蓋現有資料。
+            </div>
+            <textarea id="jsonInput" class="flex-1 border-2 border-gray-200 p-4 font-mono text-xs rounded-lg focus:border-[#8B7355] outline-none transition" placeholder='請貼上 JSON...'></textarea>
+            <div class="mt-4 text-right">
+                <button onclick="importJSON()" class="px-6 py-2 bg-[#8B7355] text-white rounded-lg font-bold shadow hover:bg-[#6e5a40] transition">確認匯入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-[#ECE8DE] h-14 flex items-center px-6 border-b border-[#DCD6C9] justify-between shrink-0 shadow-sm z-20">
+        <div class="font-black text-xl tracking-widest text-[#5A4A42]">bbb ANALYTICS <span class="text-xs font-normal text-gray-500 ml-1">Ultimate</span></div>
+        <div class="flex items-center gap-3">
+            <div id="statusBadge" class="text-xs font-mono px-2 py-1 rounded bg-gray-200 text-gray-500 flex items-center hidden md:flex">Offline</div>
+            <button onclick="toggleModal('jsonModal')" class="bg-[#8B7355] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow flex items-center gap-2 hover:scale-105 transition">
+                <i class="fas fa-cloud-upload-alt"></i> 手動匯入
+            </button>
+            <button onclick="syncData(true)" class="bg-white border border-[#D1C7B7] text-[#8B7355] px-3 py-1.5 rounded text-xs font-bold hover:bg-gray-50 shadow-sm transition">
+                <i class="fas fa-sync-alt mr-1"></i> 刷新雲端
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-[25%] min-w-[280px] bg-[#F5F2EB] border-r border-[#E5E0D8] flex flex-col z-10 shadow-[4px_0_10px_rgba(0,0,0,0.02)]">
+            <div class="p-3 border-b border-[#E5E0D8] bg-[#F5F2EB]">
+                <div class="relative group">
+                    <input type="text" id="addStockInput" placeholder="代號 (如 2330) 按 Enter 呼叫 AI" 
+                           class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#8B7355] shadow-inner font-mono tracking-wide transition group-hover:shadow-md">
+                    <button onclick="triggerAddStock()" class="absolute right-2 top-2 text-[#8B7355] hover:text-[#5A4A42] hover:scale-110 transition"><i class="fas fa-paper-plane text-lg"></i></button>
+                </div>
+            </div>
+            <div id="stockList" class="flex-1 overflow-y-auto p-2 space-y-1"></div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-[#FDFBF7] p-8 scroll-smooth" id="mainBoard">
+            <!-- Empty State -->
+            <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-300 select-none">
+                <i class="fas fa-folder-open text-8xl mb-6 opacity-30"></i>
+                <p class="text-xl font-light tracking-wide">請從左側選擇，或貼上 bbb 分析資料</p>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="hidden max-w-[1600px] mx-auto space-y-6 pb-24">
+                
+                <!-- 1. Header Info -->
+                <div class="flex flex-col md:flex-row justify-between items-end border-b-4 border-[#8B7355] pb-4">
+                    <div>
+                        <h1 class="text-5xl font-extrabold text-[#2C3E50] tracking-tighter mb-2" id="d_name_id">--</h1>
+                        <div class="flex items-center gap-3 text-xs font-mono text-gray-500">
+                            <span class="bg-gray-100 px-2 py-1 rounded flex items-center gap-1"><i class="far fa-clock"></i> <span id="d_date">--</span></span>
+                            <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100" id="aiModelTag">AI</span>
+                            <span class="text-red-500 font-bold" id="d_note"></span>
+                        </div>
+                    </div>
+                    <div class="text-right mt-4 md:mt-0">
+                        <div class="flex items-baseline justify-end gap-3">
+                            <div id="d_price" class="text-6xl font-mono font-bold text-[#2C3E50] tracking-tighter">--</div>
+                            <div id="d_change" class="text-xl font-bold">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Industry & Memo -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="col-span-2 glass-panel p-5">
+                        <div class="header-title text-[#8B7355]"><span>產業護城河 (AI)</span></div>
+                        <div class="text-[15px] text-gray-700 leading-7 text-justify mb-4 font-medium" id="d_moat_desc">--</div>
+                        <div class="flex gap-4 text-xs font-mono">
+                            <div class="bg-gray-50 px-3 py-2 rounded flex-1 border border-gray-100"><strong class="text-gray-400 block mb-1">POSITION</strong> <span id="d_pos">--</span></div>
+                            <div class="bg-gray-50 px-3 py-2 rounded flex-1 border border-gray-100"><strong class="text-gray-400 block mb-1">RIVALS</strong> <span id="d_comp">--</span></div>
+                        </div>
+                    </div>
+                    <div class="col-span-1 glass-panel bg-[#FFFDF5] border-[#E8E0C0] p-4 flex flex-col">
+                        <div class="header-title text-[#8B7355] border-[#DCD6C9] mb-2"><span><i class="fas fa-pen-alt mr-2"></i>備忘錄</span></div>
+                        <textarea id="d_memo" class="flex-1 w-full bg-transparent border-none text-sm resize-none focus:ring-0 leading-relaxed text-gray-600" placeholder="點擊輸入心得，將自動儲存..."></textarea>
+                    </div>
+                </div>
+
+                <!-- 3. News -->
+                <div class="glass-panel p-5">
+                    <div class="header-title text-[#8B7355]"><span>消息面 (Fact Based)</span></div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="col-span-2 space-y-2 overflow-y-auto max-h-48 pr-2" id="d_news"></div>
+                        <div class="col-span-1 border-l border-gray-100 pl-4 space-y-2 text-xs font-mono" id="d_calendar"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Financials (可編輯！) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- EPS -->
+                    <div class="glass-panel p-5">
+                        <div class="header-title text-[#8B7355]">
+                            <span>EPS (藍字為預估)</span>
+                            <span class="text-[10px] bg-yellow-100 text-yellow-800 px-2 py-1 rounded">點擊表格修正</span>
+                        </div>
+                        <div class="h-40 mb-3 relative"><canvas id="chart_eps"></canvas></div>
+                        <div class="overflow-x-auto border rounded border-gray-100">
+                            <table class="w-full data-table" id="eps_table_dom">
+                                <thead><tr><th class="text-left">期間</th><th>毛利%</th><th>淨利%</th><th>EPS</th><th>累計</th></tr></thead>
+                                <tbody id="t_eps"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Revenue -->
+                    <div class="glass-panel p-5">
+                        <div class="header-title text-[#8B7355]">
+                            <span>月營收動能</span>
+                            <span class="text-[10px] bg-yellow-100 text-yellow-800 px-2 py-1 rounded">點擊表格修正</span>
+                        </div>
+                        <div class="h-40 mb-3 relative"><canvas id="chart_rev"></canvas></div>
+                        <div class="overflow-x-auto border rounded border-gray-100">
+                            <table class="w-full data-table" id="rev_table_dom">
+                                <thead><tr><th class="text-left">月份</th><th>營收</th><th>MoM%</th><th>YoY%</th></tr></thead>
+                                <tbody id="t_rev"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Valuation -->
+                <div class="glass-panel p-5">
+                    <div class="header-title text-[#8B7355]">
+                        PE 河流圖 (估值區間)
+                        <div class="text-xs font-normal text-gray-500 lowercase flex gap-3">
+                            <span>pb:<b id="d_pb">-</b></span><span>roe:<b id="d_roe">-</b></span>
+                            <span class="bg-gray-100 px-2 rounded font-bold" id="d_pe_stat">--</span>
+                        </div>
+                    </div>
+                    <div class="h-96 w-full relative"><canvas id="chart_river"></canvas></div>
+                </div>
+
+                <!-- 6. Tech -->
+                <div class="glass-panel p-5 border-l-[6px] border-[#8B7355]">
+                    <div class="header-title text-[#8B7355]"><span>技術策略 (AI)</span><span id="d_c" class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500 font-mono">--</span></div>
+                    <p class="text-sm text-gray-700 mb-6 leading-7 text-justify" id="d_tech_txt">--</p>
+                    <div class="grid grid-cols-4 gap-4 text-center mb-4 text-sm font-mono">
+                        <div class="p-3 border rounded bg-white"><div class="text-xs text-gray-400 mb-1">30D</div><div id="p_30" class="font-bold text-blue-600">--</div></div>
+                        <div class="p-3 border rounded bg-white"><div class="text-xs text-gray-400 mb-1">180D</div><div id="p_180" class="font-bold text-blue-600">--</div></div>
+                        <div class="p-3 border rounded bg-white"><div class="text-xs text-gray-400 mb-1">360D</div><div id="p_360" class="font-bold text-blue-600">--</div></div>
+                        <div class="p-3 border border-[#8B7355] bg-[#FFFBF0] rounded"><div class="text-xs text-[#8B7355] font-bold mb-1">進場</div><div id="p_entry" class="font-black text-[#C0392B] text-lg">--</div></div>
+                    </div>
+                    <div class="text-xs text-gray-500 bg-gray-100 p-3 rounded flex items-center">
+                        <i class="fas fa-wave-square mr-2"></i> <span>BBands: <span id="d_boll" class="font-bold text-gray-700">--</span></span>
+                    </div>
+                </div>
+
+                <!-- 7. Div -->
+                <div class="glass-panel p-4 flex justify-between text-sm font-bold text-gray-700 items-center">
+                    <span class="text-[#8B7355]"><i class="fas fa-coins mr-2"></i> 股利</span>
+                    <span class="font-mono bg-gray-50 px-3 py-1 rounded">Yield: <span id="d_yield">--</span></span>
+                    <span class="font-mono bg-gray-50 px-3 py-1 rounded">Past ROI: <span id="d_roi_h">--</span></span>
+                    <span class="font-mono border border-[#C0392B] text-[#C0392B] bg-red-50 px-3 py-1 rounded">Est ROI: <span id="d_roi_f">--</span></span>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ⚠️ SETUP
+        const GITHUB_TOKEN = "github_pat_你的亂碼貼這裡"; // 請確保 token 格式正確
+        const GITHUB_USER = "Mocha-lin"; 
+        const GITHUB_REPO = "-3";
+
+        // Global State
+        let db = [];
+        let currentStockId = null;
+        let chartInstances = { river: null, eps: null, rev: null };
+
+        // 1. 初始化
+        window.onload = () => {
+            // 從 LocalStorage 載入 (這確保你的資料不會因為 GitHub 還沒更新而不見)
+            const localRaw = localStorage.getItem('bbb_db_v4');
+            if(localRaw) db = JSON.parse(localRaw);
+            renderSidebar();
+            
+            // 嘗試同步雲端
+            syncData();
+        };
+
+        // 2. 資料同步 (合併邏輯：保留本地較豐富的資料)
+        async function syncData(force = false) {
+            const badge = document.getElementById('statusBadge');
+            badge.innerText = "Syncing...";
+            badge.className = "text-xs font-mono px-2 py-1 rounded bg-yellow-100 text-yellow-600 flex items-center";
+
+            try {
+                const url = force ? `./data.json?t=${Date.now()}` : './data.json';
+                const res = await fetch(url);
+                if(!res.ok) throw new Error("Offline");
+                const cloudData = await res.json();
+
+                if (Array.isArray(cloudData)) {
+                    // 合併邏輯: 以本地為主 (保留手動匯入與修正)，更新股價與狀態
+                    cloudData.forEach(cloudItem => {
+                        const localIdx = db.findIndex(x => x.id === cloudItem.id);
+                        if (localIdx !== -1) {
+                            // 更新基礎資訊
+                            db[localIdx].basicInfo = cloudItem.basicInfo;
+                            db[localIdx].lastUpdated = cloudItem.lastUpdated;
+                            // 注意：不覆蓋 memo 或 financials，除非想用雲端強制還原
+                        } else {
+                            // 這是新股票，直接加入
+                            db.unshift(cloudItem);
+                        }
+                    });
+                    saveToLocal();
+                    renderSidebar();
+                    if(currentStockId) loadStock(currentStockId); // Refresh View
+                    
+                    badge.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span> Online`;
+                    badge.className = "text-xs font-mono px-2 py-1 rounded bg-green-100 text-green-700 flex items-center";
+                }
+            } catch (e) {
+                console.warn(e);
+                badge.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-2"></span> Local Mode`;
+                badge.className = "text-xs font-mono px-2 py-1 rounded bg-gray-100 text-gray-500 flex items-center";
+            }
+        }
+
+        // 3. 手動匯入 (JSON)
+        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
+        
+        function importJSON() {
+            try {
+                const raw = document.getElementById('jsonInput').value;
+                const newData = JSON.parse(raw);
+                const idx = db.findIndex(x => x.id === newData.id);
+                if (idx !== -1) {
+                    if (!newData.memo && db[idx].memo) newData.memo = db[idx].memo; // Keep memo
+                    db[idx] = newData;
+                } else {
+                    db.unshift(newData);
+                }
+                saveToLocal();
+                toggleModal('jsonModal');
+                renderSidebar();
+                loadStock(newData.id);
+                document.getElementById('jsonInput').value = "";
+            } catch (e) { alert("JSON 格式有誤"); }
+        }
+
+        // 4. 側邊欄渲染 (Sorting & Flashing)
+        function renderSidebar() {
+            const list = document.getElementById('stockList');
+            const q = document.getElementById('addStockInput').value.trim().toUpperCase(); // Hack search
+            list.innerHTML = "";
+            
+            // Group by category
+            let cats = {};
+            db.forEach(s => {
+                const c = s.category || "Uncategorized";
+                if (!cats[c]) cats[c] = [];
+                cats[c].push(s);
+            });
+
+            for (let [cat, items] of Object.entries(cats)) {
+                const group = document.createElement('div');
+                group.className = "mb-2";
+                group.innerHTML = `<div class="px-2 py-1 text-[10px] font-bold text-gray-400 uppercase border-b bg-gray-50 tracking-wider flex justify-between cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">${cat} <i class="fas fa-chevron-down"></i></div>`;
+                const ul = document.createElement('div');
+                ul.className = "space-y-1 p-1";
+                
+                items.forEach(s => {
+                    const el = document.createElement('div');
+                    let border = "border-transparent";
+                    const sig = s.technical?.signal_light || "";
+                    if (sig.includes('red')) border = "flash-buy";
+                    else if (sig.includes('green')) border = "flash-sell";
+                    
+                    if (currentStockId === s.id) border += " bg-white shadow-md border-l-4 border-l-[#8B7355]";
+                    
+                    const chg = parseFloat(s.basicInfo.change) || 0;
+                    const color = chg >= 0 ? "text-[#C0392B]" : "text-[#16A34A]";
+
+                    el.className = `p-2 rounded cursor-pointer border hover:bg-white transition flex justify-between items-center ${border}`;
+                    el.innerHTML = `<div><div class="font-bold text-[#2C3E50] font-mono">${s.id}</div><div class="text-xs text-gray-500 w-20 truncate">${s.name}</div></div><div class="text-right text-sm font-bold font-mono ${color}">${s.basicInfo.changePercent}</div>`;
+                    el.onclick = () => loadStock(s.id);
+                    ul.appendChild(el);
+                });
+                
+                new Sortable(ul, { animation: 150 }); // Enable Drag
+                group.appendChild(ul);
+                list.appendChild(group);
+            }
+        }
+
+        // 5. 核心：載入詳細 (Editable Table Enabled)
+        function loadStock(id) {
+            const s = db.find(x => x.id === id);
+            if (!s) return;
+            currentStockId = id;
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            renderSidebar(); // highlight
+
+            // Header
+            document.getElementById('d_name_id').innerHTML = `<span class="text-[#8B7355] mr-3">${s.id}</span>${s.name}`;
+            setText('d_date', s.lastUpdated);
+            setText('aiModelTag', s.ai_model || "AI");
+            setText('d_note', s.basicInfo.note || "");
+            
+            const p = document.getElementById('d_price');
+            const c = document.getElementById('d_change');
+            const chg = parseFloat(s.basicInfo.change);
+            const col = chg >= 0 ? "text-[#C0392B]" : "text-[#16A34A]";
+            p.innerText = s.basicInfo.price; p.className = `text-6xl font-mono font-bold tracking-tighter ${col}`;
+            c.innerText = `${s.basicInfo.change} (${s.basicInfo.changePercent})`; c.className = `text-xl font-bold ${col}`;
+
+            // Body
+            document.getElementById('d_moat_desc').innerText = s.industry.moat_status + " | " + (s.industry.moat_desc||"");
+            setText('d_pos', s.industry.position_map);
+            setText('d_comp', s.industry.competitors);
+            const memo = document.getElementById('d_memo');
+            memo.value = s.memo || "";
+            memo.oninput = () => { s.memo = memo.value; saveToLocal(); };
+
+            // Tables (Make them editable!)
+            renderEditableTable('t_eps', s.financials.eps_table || [], ['period','gross_margin','net_margin','eps','cumulative']);
+            renderEditableTable('t_rev', (s.financials.revenue_trend||[]).slice(0,12), ['month','revenue','mom','yoy']);
+
+            // News
+            const nb = document.getElementById('d_news'); nb.innerHTML="";
+            (s.news_events?.news || []).forEach(n => {
+                const tag = n.is_new ? `<span class="bg-red-500 text-white text-[9px] px-1 rounded mr-2">NEW</span>` : ``;
+                nb.innerHTML += `<div class="text-sm border-b border-gray-50 pb-1 mb-1 flex"><span class="w-20 shrink-0 text-gray-400 font-mono text-xs">${n.date}</span><span>${tag}${n.title}</span></div>`;
+            });
+            const cb = document.getElementById('d_calendar'); cb.innerHTML="";
+            (s.news_events?.calendar || []).forEach(c => cb.innerHTML+=`<div class="mb-1">${c.date} <b class="text-[#8B7355]">${c.event}</b></div>`);
+
+            // Valuation
+            setText('d_pb', s.financials.valuation.pb);
+            setText('d_roe', s.financials.valuation.roe);
+            setText('d_pe_stat', s.financials.valuation.pe_status);
+
+            // Tech
+            setText('d_c', "C: "+s.technical.correction_c);
+            document.getElementById('d_tech_txt').innerText = s.technical.analysis_text;
+            setText('p_30', s.technical.predictions.days30);
+            setText('p_180', s.technical.predictions.days180);
+            setText('p_360', s.technical.predictions.days360);
+            setText('p_entry', s.technical.predictions.entry_zone);
+            setText('d_boll', s.technical.bollinger.status);
+
+            // Div
+            setText('d_yield', s.dividend.yield);
+            setText('d_roi_h', s.dividend.history_roi);
+            setText('d_roi_f', s.dividend.future_roi);
+
+            renderCharts(s);
+        }
+
+        // --- Core: Editable Table Logic ---
+        function renderEditableTable(domId, dataArray, keys) {
+            const el = document.getElementById(domId);
+            el.innerHTML = '';
+            
+            dataArray.forEach((row, rIndex) => {
+                const cls = row.is_estimate ? "est-row" : "fact-row";
+                const tag = row.is_estimate ? '<span class="est-tag">預</span>' : '';
+                let tr = document.createElement('tr');
+                tr.className = cls;
+                
+                keys.forEach((key, kIndex) => {
+                    let td = document.createElement('td');
+                    td.className = kIndex === 0 ? "text-left" : "text-right editable";
+                    if (kIndex === 0) td.innerHTML = row[key] + tag;
+                    else {
+                        td.innerText = row[key];
+                        // Enable Edit
+                        td.contentEditable = true;
+                        td.onblur = function() {
+                            // Update Data
+                            dataArray[rIndex][key] = this.innerText;
+                            saveToLocal(); // Auto Save
+                            // Re-render chart if needed (simple fix: reload stock)
+                            // renderCharts(currentStock); // optional, nice to have
+                        };
+                    }
+                    tr.appendChild(td);
+                });
+                el.appendChild(tr);
+            });
+        }
+
+        // Charts
+        function renderCharts(s) {
+            // River
+            const ctxRiver = document.getElementById('chart_river').getContext('2d');
+            if (chartInstances.river) chartInstances.river.destroy();
+            const rd = s.financials.valuation.pe_river_data;
+            if(rd && rd.price) {
+                chartInstances.river = new Chart(ctxRiver, {
+                    type: 'line',
+                    data: {
+                        labels: rd.dates,
+                        datasets: [
+                            { label: 'Price', data: rd.price, borderColor:'#374151', borderWidth:2.5, pointRadius:0, tension:0.1, z:10 },
+                            { label: 'PE20', data: rd.pe20, borderColor:'#DC2626', borderDash:[5,5], borderWidth:1, pointRadius:0, fill:false },
+                            { label: 'PE16', data: rd.pe16, borderColor:'#F59E0B', borderDash:[5,5], borderWidth:1, pointRadius:0, fill:'-1', backgroundColor:'rgba(220,38,38,0.05)' },
+                            { label: 'PE12', data: rd.pe12, borderColor:'#16A34A', borderDash:[5,5], borderWidth:1, pointRadius:0, fill:'-1', backgroundColor:'rgba(245,158,11,0.1)' }
+                        ]
+                    },
+                    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, elements:{point:{radius:0}} }
+                });
+            }
+
+            // EPS (Line)
+            const ctxEps = document.getElementById('chart_eps').getContext('2d');
+            if(chartInstances.eps) chartInstances.eps.destroy();
+            const eD = s.financials.eps_table || [];
+            chartInstances.eps = new Chart(ctxEps, {
+                type: 'line',
+                data: {
+                    labels: eD.map(e=>e.period),
+                    datasets: [{
+                        label: 'EPS', data: eD.map(e=>parseFloat(e.eps)),
+                        borderColor: '#2563EB', backgroundColor: '#93C5FD', fill: true, tension: 0.3,
+                        segment: { borderDash: ctx => ctx.p0DataIndex >= eD.findIndex(x=>x.is_estimate) ? [5,5] : undefined }
+                    }]
+                },
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}}} }
+            });
+
+            // Revenue (Bar)
+            const ctxRev = document.getElementById('chart_rev').getContext('2d');
+            if(chartInstances.rev) chartInstances.rev.destroy();
+            const rD = (s.financials.revenue_trend||[]).slice(0,12).reverse();
+            chartInstances.rev = new Chart(ctxRev, {
+                type: 'bar',
+                data: {
+                    labels: rD.map(r=>r.month),
+                    datasets: [{ 
+                        data: rD.map(r=>parseFloat(r.revenue)), 
+                        backgroundColor: rD.map(r=>r.is_estimate ? '#93C5FD' : '#D1D5DB'),
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
+            });
+        }
+
+        async function triggerAddStock() {
+            const input = document.getElementById('addStockInput');
+            const id = input.value.trim().toUpperCase();
+            if(!id) return;
+            
+            // Check Local First
+            if(db.find(x=>x.id===id)) { alert("已存在"); loadStock(id); input.value=""; return; }
+            if(GITHUB_TOKEN.includes("貼")) { alert("請填入 GitHub Token"); return; }
+            if(!confirm(`呼叫 AI 分析 ${id}? (耗時 1 min)`)) return;
+
+            document.getElementById('processingOverlay').style.display = 'flex';
+            document.getElementById('targetStock').innerText = id;
+            input.value = "";
+
+            try {
+                await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/dispatches`, {
+                    method: 'POST',
+                    headers: {'Accept':'application/vnd.github.v3+json', 'Authorization': `Bearer ${GITHUB_TOKEN}`},
+                    body: JSON.stringify({ event_type: 'add_stock_trigger', client_payload: { stock_id: id } })
+                });
+                // Start polling GitHub data update
+                startPolling(id);
+            } catch(e) { 
+                alert("GitHub 連線失敗: "+e); 
+                document.getElementById('processingOverlay').style.display = 'none';
+            }
+        }
+
+        let poll;
+        function startPolling(id) {
+            let n = 0; if(poll) clearInterval(poll);
+            poll = setInterval(async()=>{
+                n++;
+                try {
+                    // Try fetch cloud
+                    const res = await fetch(`./data.json?t=${Date.now()}`);
+                    const d = await res.json();
+                    if(d.find(s=>s.id===id)) {
+                        clearInterval(poll);
+                        await syncData(true); // Sync & Merge
+                        loadStock(id);
+                        document.getElementById('processingOverlay').style.display='none';
+                    }
+                } catch(e){}
+                if(n>30) { clearInterval(poll); document.getElementById('processingOverlay').style.display='none'; alert("逾時，請稍後手動刷新"); }
+            }, 5000);
+        }
+
+        function saveToLocal() { localStorage.setItem('bbb_db_v4', JSON.stringify(db)); }
+        function setText(i,t) { const e=document.getElementById(i); if(e) e.innerText=t||'-'; }
+    </script>
+</body>
+</html>
