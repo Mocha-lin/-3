@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bbb 投資戰情室</title>
+    <!-- 引入外部套件 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --bg-color: #FDFBF7; --sidebar-bg: #F5F2EB; --accent: #8B7355; --text: #2C3E50; }
+        body { background-color: var(--bg-color); color: var(--text); font-family: sans-serif; height: 100vh; overflow: hidden; }
+        /* 區塊卡片樣式 */
+        .card { background: white; border: 1px solid #E5E0D8; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .card-header { font-weight: bold; border-bottom: 2px solid #E5E0D8; padding-bottom: 0.5rem; margin-bottom: 1rem; color: var(--text); display: flex; justify-content: space-between; align-items: center;}
+        
+        /* 側邊欄樣式 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #D1C7B7; border-radius: 4px; }
+        
+        /* Loading 遮罩 */
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 99; display: none; justify-content: center; align-items: center; flex-direction: column; }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <!-- 1. 全螢幕 Loading 畫面 -->
+    <div id="processingOverlay" class="loading-overlay">
+        <div class="text-[#8B7355] text-5xl mb-4"><i class="fas fa-circle-notch fa-spin"></i></div>
+        <h2 class="text-xl font-bold text-gray-700">正在呼叫 bbb 戰情室...</h2>
+        <p class="text-gray-500 mt-2">AI 正在為您分析 <span id="targetStock" class="font-bold text-[#8B7355]"></span></p>
+        <p class="text-xs text-gray-400 mt-4 animate-pulse">運算約需 60~90 秒，完成後將自動刷新頁面</p>
+    </div>
+
+    <!-- 2. 頂部 Header -->
+    <header class="bg-[#ECE8DE] h-14 flex items-center px-6 border-b border-[#DCD6C9] shrink-0 justify-between">
+        <div class="font-bold text-xl tracking-widest text-[#5A4A42]">bbb ANALYTICS</div>
+        <div class="flex items-center gap-4">
+            <div class="text-xs text-gray-500" id="systemStatus">🟢 系統待機中</div>
+            <!-- 強制更新按鈕 -->
+            <button onclick="fetchData(true)" class="bg-white border border-[#D1C7B7] text-[#8B7355] hover:bg-[#8B7355] hover:text-white transition px-3 py-1 rounded text-xs">
+                <i class="fas fa-sync-alt mr-1"></i> 重整數據
+            </button>
+        </div>
+    </header>
+
+    <!-- 3. 主版面 -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- 左側：搜尋與列表 -->
+        <aside class="w-1/4 min-w-[280px] bg-[#F5F2EB] border-r border-[#DCD6C9] flex flex-col z-10">
+            <div class="p-4 border-b border-[#E5E0D8]">
+                <!-- 搜尋框 (輸入+新增) -->
+                <div class="relative group">
+                    <input type="text" id="addStockInput" placeholder="輸入代號 (如 2330) 按 Enter" 
+                           class="w-full bg-white border-2 border-[#D1C7B7] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#8B7355] placeholder-gray-400 transition shadow-sm group-hover:shadow-md">
+                    <button onclick="triggerAddStock()" class="absolute right-3 top-2.5 text-[#8B7355] hover:text-[#5A4A42] transition" title="觸發新增">
+                        <i class="fas fa-plus-circle text-lg"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 股票列表 -->
+            <div id="stockListContainer" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
+        </aside>
+
+        <!-- 右側：報告內容 -->
+        <main class="flex-1 overflow-y-auto p-6 bg-slate-50 relative" id="mainContent">
+            
+            <!-- 初始空狀態 -->
+            <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-search-dollar text-6xl mb-6 text-[#D1C7B7]"></i>
+                <p class="text-lg">請從左側選擇股票，或輸入代號新增分析</p>
+            </div>
+
+            <!-- 分析報告容器 -->
+            <div id="reportContainer" class="hidden max-w-6xl mx-auto space-y-6 pb-20">
+                
+                <!-- 標題與股價 -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-[#8B7355] pb-4 mb-6">
+                    <div>
+                        <h1 class="text-4xl font-bold text-[#2C3E50]">
+                            <span id="stockId" class="text-[#8B7355] mr-2"></span>
+                            <span id="stockName"></span>
+                        </h1>
+                        <p class="text-sm text-gray-500 mt-2">
+                            <i class="far fa-clock mr-1"></i> 資料更新：<span id="updateDate"></span>
+                        </p>
+                    </div>
+                    <div class="text-right mt-4 md:mt-0 bg-white px-4 py-2 rounded shadow-sm border border-gray-200">
+                        <div id="priceDisplay" class="text-4xl font-mono font-bold tracking-tight">--</div>
+                        <div id="priceChange" class="text-sm font-bold mt-1 text-gray-400">--</div>
+                    </div>
+                </div>
+
+                <!-- 投資筆記 -->
+                <div class="bg-[#FFFDF5] border border-[#E8E0C0] rounded-lg p-4 shadow-sm relative">
+                    <div class="text-xs font-bold text-[#8B7355] uppercase tracking-wider mb-2 flex items-center">
+                        <i class="fas fa-pen-fancy mr-2"></i> 投資筆記 (Memo)
+                    </div>
+                    <textarea id="memoArea" rows="2" 
+                              class="w-full bg-transparent border-none resize-none text-gray-700 placeholder-gray-300 focus:ring-0 text-base"
+                              placeholder="點擊此處輸入筆記，系統將自動儲存於您的裝置..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- 1. AI 護城河與短評 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span><i class="fas fa-shield-alt text-[#8B7355] mr-2"></i> 護城河與基本面</span>
+                            <span id="moatStatus" class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">--</span>
+                        </div>
+                        <div class="text-sm text-gray-700 leading-relaxed text-justify space-y-3">
+                            <p id="moatDesc">分析資料讀取中...</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. 近期新聞 (帶箭頭) -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span><i class="far fa-newspaper text-[#8B7355] mr-2"></i> 市場消息與情緒</span>
+                        </div>
+                        <div id="newsList" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+                    </div>
+                </div>
+
+                <!-- 3. 本益比河流圖 (Chart.js) -->
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fas fa-water text-[#8B7355] mr-2"></i> 本益比河流圖 (Valuation)</span>
+                        <div class="text-xs font-normal text-gray-500">
+                            <span class="inline-block w-2 h-2 rounded-full bg-red-400 mr-1"></span>20x
+                            <span class="inline-block w-2 h-2 rounded-full bg-yellow-400 mr-1 ml-2"></span>16x
+                            <span class="inline-block w-2 h-2 rounded-full bg-green-400 mr-1 ml-2"></span>12x
+                        </div>
+                    </div>
+                    <div class="h-72 w-full">
+                        <canvas id="peRiverChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 4. 營收趨勢圖 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span><i class="fas fa-chart-bar text-[#8B7355] mr-2"></i> 營收趨勢</span>
+                        </div>
+                        <div class="h-60">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 5. 技術面 AI 分析 -->
+                    <div class="card border-l-4 border-l-[#8B7355]">
+                        <div class="card-header">
+                            <span><i class="fas fa-robot text-[#8B7355] mr-2"></i> 技術面 AI 判讀</span>
+                        </div>
+                        <div class="space-y-4">
+                            <p id="techAnalysis" class="text-sm text-gray-600 leading-relaxed">資料讀取中...</p>
+                            
+                            <!-- 訊號小卡 -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                                    <div class="text-xs text-gray-400 mb-1">布林通道狀態</div>
+                                    <div id="bollingerDesc" class="font-bold text-sm text-[#2C3E50] truncate">--</div>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                                    <div class="text-xs text-gray-400 mb-1">進場區間建議</div>
+                                    <div id="entryZone" class="font-bold text-sm text-[#8B7355]">--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script 邏輯 -->
+    <script>
+        // --- 設定區 (請修改這裡) ---
+        // 注意：為了方便測試，Token 暫時寫在前端，生產環境請注意安全
+        const GITHUB_USER = "Mocha-lin"; // 改成你的
+        const GITHUB_REPO = "-3";        // 改成你的 Repo 名
+        const GITHUB_TOKEN = "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"; // 請務必貼上新的 Token
+
+        // --- 全域變數 ---
+        let stocks = [];
+        let currentStockId = null;
+        // 圖表實例容器 (用於 destroy)
+        let charts = {
+            pe: null,
+            fin: null
+        };
+
+        // 1. 初始化
+        window.onload = async function() {
+            renderSidebar(); // 先清空或顯示舊的
+            await fetchData(); // 抓取資料
+        };
+
+        // 按 Enter 監聽
+        document.getElementById('addStockInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') triggerAddStock();
+        });
+
+        // 2. 抓取資料 (GitHub data.json)
+        async function fetchData(force = false) {
+            try {
+                // 加時間戳記避免快取
+                const url = force ? `./data.json?t=${Date.now()}` : './data.json';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("無數據檔");
+                
+                const cloudData = await res.json();
+                console.log("📥 數據下載成功:", cloudData);
+                
+                // 合併邏輯：保留本地 Memo
+                const localStr = localStorage.getItem('bbb_db') || '[]';
+                const localData = JSON.parse(localStr);
+                
+                let merged = cloudData.map(c => {
+                    const local = localData.find(l => l.id === c.id);
+                    if (local && local.memo) c.memo = local.memo;
+                    return c;
+                });
+
+                stocks = merged;
+                localStorage.setItem('bbb_db', JSON.stringify(stocks));
+                renderSidebar();
+                
+                if (currentStockId) loadStock(currentStockId); // 刷新當前頁面
+                document.getElementById('systemStatus').innerText = `🟢 最後更新: ${new Date().toLocaleTimeString()}`;
+
+            } catch (e) {
+                console.warn("使用離線資料或失敗:", e);
+                // 失敗時嘗試讀取離線資料
+                const localStr = localStorage.getItem('bbb_db');
+                if (localStr) {
+                    stocks = JSON.parse(localStr);
+                    renderSidebar();
+                }
+                document.getElementById('systemStatus').innerText = "🔴 離線模式";
+            }
+        }
+
+        // 3. 渲染側邊欄
+        function renderSidebar() {
+            const list = document.getElementById('stockListContainer');
+            list.innerHTML = '';
+            
+            if (stocks.length === 0) {
+                list.innerHTML = '<div class="text-center text-xs text-gray-400 mt-4">尚無追蹤股票</div>';
+                return;
+            }
+
+            stocks.forEach(s => {
+                const item = document.createElement('div');
+                item.className = `p-3 mb-2 bg-white rounded-lg cursor-pointer border hover:border-[#8B7355] transition flex justify-between items-center shadow-sm ${s.id === currentStockId ? 'border-[#8B7355] border-l-4 ring-1 ring-[#8B7355]/20' : 'border-transparent'}`;
+                
+                // 顏色判斷
+                const chg = parseFloat(s.basicInfo.change) || 0;
+                const color = chg > 0 ? 'text-red-500' : (chg < 0 ? 'text-green-600' : 'text-gray-500');
+
+                item.innerHTML = `
+                    <div>
+                        <div class="font-bold text-gray-700">${s.id}</div>
+                        <div class="text-xs text-gray-500 truncate w-24">${s.name}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-mono font-bold text-sm text-gray-800">${s.basicInfo.price}</div>
+                        <div class="text-xs ${color}">${s.basicInfo.changePercent}</div>
+                    </div>
+                `;
+                item.onclick = () => loadStock(s.id);
+                list.appendChild(item);
+            });
+        }
+
+        // 4. 顯示股票詳情 (主要邏輯)
+        function loadStock(id) {
+            currentStockId = id;
+            const s = stocks.find(k => k.id === id);
+            if (!s) return;
+
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('reportContainer').classList.remove('hidden');
+            renderSidebar(); // 更新選中狀態
+
+            // 填寫基本資料
+            document.getElementById('stockId').innerText = s.id;
+            document.getElementById('stockName').innerText = s.name;
+            document.getElementById('updateDate').innerText = s.lastUpdated;
+            
+            const pEl = document.getElementById('priceDisplay');
+            const cEl = document.getElementById('priceChange');
+            pEl.innerText = s.basicInfo.price;
+            cEl.innerText = `${s.basicInfo.change} (${s.basicInfo.changePercent})`;
+
+            // 價格變色
+            const chg = parseFloat(s.basicInfo.change) || 0;
+            const pColor = chg > 0 ? 'text-red-500' : (chg < 0 ? 'text-green-600' : 'text-gray-800');
+            pEl.className = `text-4xl font-mono font-bold tracking-tight ${pColor}`;
+            cEl.className = `text-sm font-bold mt-1 ${chg > 0 ? 'text-red-400' : (chg < 0 ? 'text-green-500' : 'text-gray-400')}`;
+
+            // 投資筆記 (雙向綁定)
+            const memoEl = document.getElementById('memoArea');
+            memoEl.value = s.memo || "";
+            memoEl.oninput = function() {
+                s.memo = this.value;
+                localStorage.setItem('bbb_db', JSON.stringify(stocks));
+            };
+
+            // AI 資料
+            document.getElementById('moatStatus').innerText = s.moat?.status || '未分級';
+            document.getElementById('moatDesc').innerText = s.moat?.description || '資料產生中...';
+            document.getElementById('techAnalysis').innerText = s.technical?.analysis || '資料不足';
+            document.getElementById('bollingerDesc').innerText = s.technical?.bollinger?.status || '-';
+            document.getElementById('entryZone').innerText = s.technical?.predictions?.entryZone || '-';
+
+            // 新聞 (含紅綠燈)
+            const newsBox = document.getElementById('newsList');
+            newsBox.innerHTML = '';
+            (s.news || []).forEach(n => {
+                let icon = '<i class="fas fa-circle text-gray-200 text-[6px] mt-1.5 mr-2"></i>'; // 中性
+                if (n.type === 'positive' || n.title.match(/增|漲|高|旺/)) icon = '<i class="fas fa-caret-up text-red-500 text-lg mr-2 -mt-1"></i>';
+                if (n.type === 'negative' || n.title.match(/減|跌|低|淡/)) icon = '<i class="fas fa-caret-down text-green-500 text-lg mr-2 -mt-1"></i>';
+                
+                newsBox.innerHTML += `
+                    <div class="flex items-start pb-2 border-b border-gray-100 last:border-0">
+                        <div class="w-6 shrink-0 text-center">${icon}</div>
+                        <div>
+                            <div class="text-[10px] text-gray-400 font-mono">${n.date}</div>
+                            <div class="text-sm text-gray-800 leading-snug hover:text-[#8B7355] cursor-pointer">${n.title}</div>
+                        </div>
+                    </div>`;
+            });
+
+            // 畫圖
+            drawCharts(s);
+        }
+
+        // 5. 畫圖 (含 Destroy 機制)
+        function drawCharts(s) {
+            // -- PE 河流圖 --
+            const ctxPe = document.getElementById('peRiverChart').getContext('2d');
+            
+            // 🔥 這就是 Destroy：如果有舊圖，先銷毀它
+            if (charts.pe) charts.pe.destroy();
+
+            const peData = s.chartsData?.peRiverData || { dates: [], price: [] };
+            charts.pe = new Chart(ctxPe, {
+                type: 'line',
+                data: {
+                    labels: peData.dates,
+                    datasets: [
+                        { label: '股價', data: peData.price, borderColor: '#2C3E50', borderWidth: 3, pointRadius: 2, tension: 0.1 },
+                        { label: '20x', data: peData.pe20, borderColor: '#F87171', borderDash:[4,4], borderWidth:1, pointRadius:0, fill:false },
+                        { label: '16x', data: peData.pe16, borderColor: '#FACC15', borderDash:[4,4], borderWidth:1, pointRadius:0, fill:'-1', backgroundColor:'rgba(248,113,113,0.05)' },
+                        { label: '12x', data: peData.pe12, borderColor: '#4ADE80', borderDash:[4,4], borderWidth:1, pointRadius:0, fill:'-1', backgroundColor:'rgba(250,204,21,0.1)' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, interaction: { intersect: false, mode: 'index' } }
+            });
+
+            // -- 營收圖 --
+            const ctxFin = document.getElementById('financialChart').getContext('2d');
+            
+            // 🔥 Destroy
+            if (charts.fin) charts.fin.destroy();
+
+            // 產生模擬營收 (如果有真實數據請替換)
+            const revLabels = peData.dates; // 用一樣的日期
+            const revData = s.chartsData?.revenueTrend || Array(12).fill(0).map(() => Math.floor(Math.random()*50)+50); 
+            
+            charts.fin = new Chart(ctxFin, {
+                type: 'bar',
+                data: {
+                    labels: revLabels,
+                    datasets: [{
+                        label: '營收(億)',
+                        data: revData,
+                        backgroundColor: '#D1C7B7',
+                        hoverBackgroundColor: '#8B7355',
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: false }, y: { grid: { color: '#f3f4f6' } } } }
+            });
+        }
+
+        // 6. 觸發新增股票 (API)
+        async function triggerAddStock() {
+            const input = document.getElementById('addStockInput');
+            const stockId = input.value.trim();
+            if (!stockId) return;
+            
+            // 防呆
+            if (stocks.find(s => s.id === stockId)) {
+                alert("此股票已存在");
+                loadStock(stockId);
+                input.value = '';
+                return;
+            }
+
+            if (!confirm(`確定觸發 AI 分析 ${stockId} 嗎？`)) return;
+
+            // UI 狀態切換
+            document.getElementById('processingOverlay').style.display = 'flex';
+            document.getElementById('targetStock').innerText = stockId;
+            input.value = '';
+
+            // 發送 Request
+            try {
+                const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/dispatches`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Authorization': `Bearer ${GITHUB_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        event_type: 'add_stock_trigger',
+                        client_payload: { stock_id: stockId }
+                    })
+                });
+
+                if (res.ok) {
+                    console.log("🚀 指令已發送，開始輪詢...");
+                    startPolling(stockId);
+                } else {
+                    throw new Error(`API 錯誤: ${res.status}`);
+                }
+            } catch (e) {
+                alert("發送失敗: " + e.message);
+                document.getElementById('processingOverlay').style.display = 'none';
+            }
+        }
+
+        // 7. 輪詢檢查 (Polling)
+        let pollTimer = null;
+        function startPolling(targetId) {
+            let attempts = 0;
+            if (pollTimer) clearInterval(pollTimer);
+
+            pollTimer = setInterval(async () => {
+                attempts++;
+                try {
+                    // 偷偷抓最新的 JSON
+                    const res = await fetch(`./data.json?t=${Date.now()}`);
+                    const newData = await res.json();
+                    
+                    // 檢查有沒有那一支
+                    const found = newData.find(s => s.id === targetId);
+                    
+                    if (found) {
+                        // 🎉 找到了！
+                        clearInterval(pollTimer);
+                        await fetchData(true); // 全局刷新
+                        loadStock(targetId);   // 跳轉
+                        document.getElementById('processingOverlay').style.display = 'none';
+                        alert(`${targetId} 分析完成！`);
+                    }
+                } catch(e) {}
+
+                // 超時機制 (100秒)
+                if (attempts > 20) {
+                    clearInterval(pollTimer);
+                    document.getElementById('processingOverlay').style.display = 'none';
+                    alert("等待逾時，請稍後手動刷新頁面檢查。");
+                }
+            }, 5000); // 每5秒檢查一次
+        }
+    </script>
+</body>
+</html>
