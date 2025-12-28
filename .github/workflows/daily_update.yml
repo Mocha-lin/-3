@@ -16,18 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # ✅ 優化部分 A: 加入 cache: 'pip' 設定
+      # 這告訴 GitHub：「跑完如果這台電腦要銷毀，把 Python 套件存起來，下次繼續用」
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+          cache: 'pip' 
 
+      # ✅ 優化部分 B: 標準化安裝指令
+      # 即使 requirements.txt 不存在或有誤，下面的 fallback 也能保證安裝成功
       - name: Install dependencies
-        run: pip install yfinance google-generativeai pandas
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install yfinance google-generativeai pandas
 
       - name: Run Update Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        # 如果是網頁觸發的，就傳入 --add 參數；否則就直接跑 (更新現有)
         run: |
           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
             echo "🔥 觸發新增股票: ${{ github.event.client_payload.stock_id }}"
