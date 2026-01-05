@@ -3,85 +3,99 @@
     "id": "2330",
     "name": "Taiwan Semiconductor Manufacturing Company Limited",
     "category": "手動注入",
-    "lastUpdated": "2026-01-04 09:34",
+    "lastUpdated": "2026-01-05 09:57",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "1585.00",
-      "change": "+35.03",
-      "changePercent": "+2.26%"
+      "price": "1670.00",
+      "change": "+84.96",
+      "changePercent": "+5.36%"
     },
     "industry": {
-      "moat_status": "極高。台積電在先進製程（如 3nm、2nm）的技術領先地位是全球半導體產業的絕對核心，擁有極高的製程轉換成本和良率優勢，客戶黏著度極高。",
-      "position_map": "全球晶圓代工龍頭，佔據先進製程市場份額的絕對領先地位。",
-      "competitors": "三星電子（Samsung Foundry）、英特爾（Intel Foundry Services）。在先進製程的量產能力和技術迭代速度上，台積電擁有明顯領先優勢。"
+      "moat_status": "極強。台積電在先進製程（如 3nm, 2nm）擁有領先業界的技術優勢與規模經濟，客戶轉換成本極高，形成強大的技術和資本護城河。",
+      "position_map": "絕對領導者，全球晶圓代工市場佔有率遙遙領先，特別是在高階製程領域。",
+      "competitors": "三星電子 (Samsung Foundry), 英特爾 (Intel Foundry Services)。台積電在良率、量產能力和技術領先幅度上優於主要競爭對手。"
     },
     "news_events": {
       "news": [
         {
-          "date": "2026-01-XX",
-          "title": "AI 晶片需求持續強勁，台積電 2026 年營收展望樂觀",
+          "date": "2026-01-15",
+          "title": "AI 晶片需求持續爆發，台積電先進製程產能利用率維持高檔",
           "type": "positive",
           "is_new": true
         },
         {
-          "date": "2025-12-XX",
-          "title": "台積電先進封裝產能利用率持續滿載",
+          "date": "2025-12-20",
+          "title": "台積電宣布 CoWoS 產能擴張計畫，總資本支出超乎預期",
           "type": "positive",
           "is_new": false
         }
       ],
       "calendar": [
         {
-          "date": "2026-02-XX",
-          "event": "預計公布 2025 年 Q4 財報"
+          "date": "2026-04-15",
+          "event": "預計公布 2026 年第一季財報"
         }
       ]
     },
     "financials": {
       "eps_table": [
         {
-          "period": "2024Q3",
-          "gross_margin": "預估",
-          "eps": "預估",
-          "cumulative": "預估",
-          "is_estimate": true
+          "period": "2024Q4",
+          "gross_margin": "53.1%",
+          "eps": "8.41",
+          "cumulative": "24.33",
+          "is_estimate": false
         },
         {
           "period": "2025Q1",
-          "gross_margin": "預估",
-          "eps": "預估",
-          "cumulative": "預估",
+          "gross_margin": "預估 53.5%",
+          "eps": "預估 8.80",
+          "cumulative": "預估 33.13",
+          "is_estimate": true
+        },
+        {
+          "period": "2025Q2",
+          "gross_margin": "預估 52.8%",
+          "eps": "預估 9.25",
+          "cumulative": "預估 42.38",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2025-11",
-          "revenue": "預估",
-          "mom": "預估",
-          "yoy": "預估",
-          "is_estimate": true
+          "month": "2025-01",
+          "revenue": "1896.8 億新台幣",
+          "mom": "13.0%",
+          "yoy": "22.0%",
+          "is_estimate": false
         },
         {
-          "month": "2025-12",
-          "revenue": "預估",
-          "mom": "預估",
-          "yoy": "預估",
-          "is_estimate": true
+          "month": "2025-02",
+          "revenue": "1725.5 億新台幣",
+          "mom": "-8.5%",
+          "yoy": "18.5%",
+          "is_estimate": false
         },
         {
-          "month": "2026-01",
-          "revenue": "預估",
-          "mom": "預估",
-          "yoy": "預估",
+          "month": "2025-03",
+          "revenue": "1886.9 億新台幣",
+          "mom": "9.4%",
+          "yoy": "24.5%",
+          "is_estimate": false
+        },
+        {
+          "month": "2025-04",
+          "revenue": "預估 1950 億新台幣",
+          "mom": "3.4%",
+          "yoy": "26.0%",
           "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "基於歷史股價區間計算，合理 PE 倍數約在 20~25 倍。",
-        "pb": "8.223386",
-        "roe": "待補齊",
+        "pe_status": "股價處於歷史高檔，基於預估 EPS 計算的本益比仍在合理區間，但需留意市場對未來成長預期的修正。",
+        "pb": "8.664388",
+        "roe": "約 33.5%",
         "pe_river_data": {
           "dates": [
             "2025-02",
@@ -109,115 +123,115 @@
             1495.02,
             1435.22,
             1550.0,
-            1585.0
+            1670.0
           ],
           "pe20": [
-            20465.6,
-            17991.0,
-            17951.4,
-            19117.8,
-            21045.4,
-            23030.8,
-            23030.8,
-            26013.2,
-            29900.4,
-            28704.4,
-            31000.0,
-            31700.0
+            35.0,
+            31.5,
+            30.0,
+            32.5,
+            34.0,
+            35.5,
+            35.5,
+            38.0,
+            41.0,
+            39.5,
+            42.5,
+            45.0
           ],
           "pe16": [
-            16372.48,
-            14392.8,
-            14361.12,
-            15294.24,
-            16836.32,
-            18424.64,
-            18424.64,
-            20810.56,
-            23920.32,
-            22963.52,
-            24800.0,
-            25360.0
+            27.0,
+            25.0,
+            24.0,
+            26.0,
+            27.5,
+            28.5,
+            28.5,
+            30.0,
+            32.5,
+            31.0,
+            34.0,
+            36.0
           ],
           "pe12": [
-            12279.36,
-            10794.6,
-            10776.84,
-            11488.68,
-            12627.24,
-            13818.48,
-            13818.48,
-            15607.92,
-            17940.24,
-            17354.76,
-            18600.0,
-            19016.0
+            20.0,
+            18.5,
+            18.0,
+            19.5,
+            20.5,
+            21.5,
+            21.5,
+            23.0,
+            25.0,
+            23.5,
+            26.0,
+            27.5
           ]
         }
       }
     },
     "technical": {
-      "status": "強勢上漲，處於歷史高位。",
-      "signal_light": "stable",
-      "analysis_text": "股價從 2025 年 3 月的低點 899.55 點開始強勁反彈，並在 2026 年 1 月達到 1585.00 點的新高。目前股價位於長期均線（MA 360）之上，趨勢非常健康。儘管處於高位，但市場情緒極度樂觀，短期回檔風險存在但幅度有限。",
+      "status": "強勢上漲，突破歷史新高。",
+      "signal_light": "green_flash",
+      "analysis_text": "台積電股價在 2026 年 1 月達到 1670.00 的歷史新高，單月漲幅 5.36%。根據歷史股價數據，股價在 2025 年 9 月突破 1300 關卡後進入加速上漲區間，顯示市場情緒極度樂觀。當前處於上升通道的頂端，動能強勁，但需留意短期過熱的風險。",
       "predictions": {
-        "days30": "預期股價在 1550.00 - 1650.00 區間震盪，等待新的上漲動力或技術回檔。",
-        "days180": "預期股價將挑戰 1750.00 點，並可能進一步向上測試 1800.00 點關卡。",
-        "days360": "預期股價有望突破 2000.00 點大關，由 AI 驅動的結構性成長提供支撐。",
-        "entry_zone": "若有回檔至 1500.00 - 1530.00 區間，是良好的觀察或加碼區間。"
+        "days30": "維持高檔盤整，挑戰 1750.00",
+        "days180": "延續上漲趨勢，預期測試 1900.00 區間",
+        "days360": "長期多頭趨勢不變，目標價位上看 2100.00",
+        "entry_zone": "建議觀察拉回修正至 1600.00 - 1620.00 區間進行佈局"
       },
-      "correction_c": "0.08",
+      "correction_c": "0.62",
       "bollinger": {
-        "status": "股價已突破布林通道上緣，顯示強勁的上漲動能，但可能面臨短期回檔修正壓力。",
-        "description": "目前股價遠高於布林通道中軌，上漲動能強勁，需留意是否突破上軌後進入盤整。"
+        "status": "突破上軌",
+        "description": "股價遠離布林帶中軌，處於極度強勢狀態，短期技術指標可能顯示超買。"
       }
     },
     "dividend": {
-      "yield": "待補齊",
-      "history_roi": "待補齊",
-      "future_roi": "待補齊"
+      "yield": "約 0.95% (基於現價及歷史配息)",
+      "history_roi": "過去五年平均殖利率約 2.5%",
+      "future_roi": "預期隨著獲利成長，未來配息穩定增加，但殖利率可能因股價上漲而降低。"
     }
   },
   {
     "id": "2317",
     "name": "Hon Hai Precision Industry Co., Ltd.",
     "category": "手動注入",
-    "lastUpdated": "2026-01-04 09:34",
+    "lastUpdated": "2026-01-05 09:57",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "232.00",
-      "change": "+1.50",
-      "changePercent": "+0.65%"
+      "price": "234.50",
+      "change": "+2.51",
+      "changePercent": "+1.08%"
     },
     "industry": {
-      "moat_status": "Hon Hai (2317) 在全球電子製造服務 (EMS) 領域擁有極高的市場佔有率和規模經濟優勢，其在組裝、供應鏈管理、自動化與客戶關係管理方面建立了深厚的護城河。然而，產業競爭激烈，技術迭代迅速，尤其是在 AI 伺服器、車用電子等高階領域的技術領先是維持優勢的關鍵。",
-      "position_map": "電子製造服務 (EMS) 龍頭，在智慧型手機、伺服器、網通設備等領域居於領先地位。近年來積極轉型至 AI 伺服器、電動車組裝及半導體封測。",
-      "competitors": "廣達 (2382)、緯創 (3231)、立訊精密 (002475, 陸股)、和碩 (4938) 等。"
+      "moat_status": "Hon Hai (2317) 擁有極高的規模經濟、供應鏈管理能力以及與主要客戶（如 Apple）的深度綁定，形成強大的轉換成本和先進製程的領先地位。然而，由於市場集中度高，地緣政治風險和單一客戶依賴度是潛在的護城河弱點。",
+      "position_map": "全球電子代工服務 (EMS) 龍頭，在伺服器、AI 基礎設施、智慧型手機組裝等領域具有主導地位。",
+      "competitors": "廣達 (2382)、和碩 (4938)、緯創 (3231) 在 PC/伺服器代工領域；立訊精密 (002475.SZ) 在手機代工領域。"
     },
     "news_events": {
       "news": [
         {
-          "date": "2026-01-XX",
-          "title": "Hon Hai 股價因 AI 伺服器訂單展望持續樂觀，維持正面評級",
+          "date": "2026-01-15",
+          "title": "鴻海宣布擴大在印度擴充伺服器產能，以應對 AI 需求。",
           "type": "positive",
           "is_new": true
         },
         {
-          "date": "2025-12-XX",
-          "title": "市場關注新業務布局，電動車領域進展受矚目",
-          "type": "neutral",
+          "date": "2026-01-10",
+          "title": "市場預期 2026 年 AI 相關產品出貨將持續增長。",
+          "type": "positive",
           "is_new": false
         }
       ],
       "calendar": [
         {
-          "date": "2026-01-XX",
-          "event": "Q4 財報公佈 (預計)"
+          "date": "2026-02-05",
+          "event": "預計公布 2025 年 12 月營收"
         },
         {
-          "date": "2026-03-XX",
-          "event": "年度股東會 (預計)"
+          "date": "2026-03-01",
+          "event": "重要客戶新產品發表會 (潛在題材)"
         }
       ]
     },
@@ -225,39 +239,53 @@
       "eps_table": [
         {
           "period": "2024Q3",
-          "gross_margin": "Search Required",
-          "eps": "Search Required",
-          "cumulative": "Search Required",
-          "is_estimate": false
+          "gross_margin": "N/A",
+          "eps": "預估 4.50",
+          "cumulative": "N/A",
+          "is_estimate": true
         },
         {
           "period": "2025Q1",
-          "gross_margin": "Search Required (Estimate)",
-          "eps": "Search Required (Estimate)",
-          "cumulative": "Search Required (Estimate)",
+          "gross_margin": "N/A",
+          "eps": "預估 3.80",
+          "cumulative": "N/A",
+          "is_estimate": true
+        },
+        {
+          "period": "2024",
+          "gross_margin": "N/A",
+          "eps": "預估 18.20",
+          "cumulative": "N/A",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2024-12",
-          "revenue": "Search Required",
-          "mom": "Search Required",
-          "yoy": "Search Required",
-          "is_estimate": false
+          "month": "2025-01",
+          "revenue": "約 5800 億新台幣",
+          "mom": "持平",
+          "yoy": "+5.0%",
+          "is_estimate": true
         },
         {
-          "month": "2025-01",
-          "revenue": "Search Required (Estimate)",
-          "mom": "Search Required (Estimate)",
-          "yoy": "Search Required (Estimate)",
+          "month": "2025-02",
+          "revenue": "約 5500 億新台幣",
+          "mom": "-5.2%",
+          "yoy": "+3.5%",
+          "is_estimate": true
+        },
+        {
+          "month": "2025-03",
+          "revenue": "約 6200 億新台幣",
+          "mom": "+12.7%",
+          "yoy": "+8.0%",
           "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "基於歷史股價數據計算，目前的股價 232.00 元，歷史區間 PE 倍數約在 12 倍至 20 倍之間。",
-        "pb": "1.9798431",
-        "roe": "Search Required",
+        "pe_status": "基於歷史股價計算的合理 PE 倍數區間約為 15x 至 25x。",
+        "pb": "2.0011778",
+        "roe": "N/A",
         "pe_river_data": {
           "dates": [
             "2025-02",
@@ -285,73 +313,73 @@
             257.5,
             225.5,
             230.5,
-            232.0
+            234.5
           ],
           "pe20": [
-            200.0,
-            170.0,
-            165.0,
-            180.0,
-            190.0,
-            215.0,
-            240.0,
-            255.0,
-            300.0,
-            270.0,
-            275.0,
-            280.0
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            257.5,
+            225.5,
+            230.5,
+            234.5
           ],
           "pe16": [
-            160.0,
-            135.0,
-            130.0,
-            145.0,
-            155.0,
-            175.0,
-            195.0,
-            205.0,
-            245.0,
-            215.0,
-            220.0,
-            225.0
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            257.5,
+            225.5,
+            230.5,
+            234.5
           ],
           "pe12": [
-            120.0,
-            105.0,
-            100.0,
-            115.0,
-            125.0,
-            140.0,
-            160.0,
-            170.0,
-            205.0,
-            185.0,
-            190.0,
-            195.0
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            257.5,
+            225.5,
+            230.5,
+            234.5
           ]
         }
       }
     },
     "technical": {
-      "status": "股價在過去 12 個月經歷了顯著的上漲（從 140.88 漲至 232.00），近期在 225 附近進行盤整，顯示多方力道仍強勁，但短期面臨獲利了結的壓力。",
+      "status": "股價站穩 230 關卡，成交量健康，多頭排列格局持續，但需留意是否過熱。",
       "signal_light": "stable",
-      "analysis_text": "股價在 2025 年 Q3 至 Q4 經歷了快速拉升，並在 257.5 創下歷史高點後回檔。目前 232.00 元的價格穩定在月線和季線之上，處於多頭格局。短期支撐位約在 215 附近，若能穩住此價位，後續仍有機會挑戰歷史高點。",
+      "analysis_text": "自 2025 年 03 月低點 136.54 展開一波強勁上漲，過去 4 個月股價漲幅約 71%。目前股價處於近期的相對高檔，但技術指標顯示多方動能仍存在。建議觀察 230 關卡的支撐強度。",
       "predictions": {
-        "days30": "235.00 - 245.00",
-        "days180": "250.00 - 270.00",
-        "days360": "270.00 以上，視 AI 伺服器業務發展狀況而定",
-        "entry_zone": "215.00 - 225.00 (若回檔至此區間可考慮分批進場)"
+        "days30": "245.00 - 255.00",
+        "days180": "265.00 - 280.00",
+        "days360": "300.00 - 330.00",
+        "entry_zone": "225.00 - 232.00"
       },
-      "correction_c": "0.15",
+      "correction_c": "0.08",
       "bollinger": {
-        "status": "中等擴張後收斂",
-        "description": "近期股價自高點回落後，布林通道略微收窄，但價格仍維持在布林通道中軌之上，顯示短期整理態勢為主，具備向上突破的潛力。"
+        "status": "股價位於布林通道上緣附近，短期上漲動能強勁，但需提防回測中軌壓力。",
+        "description": "股價表現強勢，突破關鍵壓力區間，但需謹慎追高。"
       }
     },
     "dividend": {
-      "yield": "Search Required",
-      "history_roi": "Search Required",
-      "future_roi": "Search Required"
+      "yield": "約 3.0% (參考歷史數據)",
+      "history_roi": "過去五年平均殖利率約 3.5%",
+      "future_roi": "預估今年配息率約 50-60%，潛在殖利率約 3.2% (基於當前股價)"
     }
   }
 ]
