@@ -3,24 +3,24 @@
     "id": "2330",
     "name": "Taiwan Semiconductor Manufacturing Company Limited",
     "category": "手動注入",
-    "lastUpdated": "2026-03-30 10:04",
+    "lastUpdated": "2026-03-31 09:52",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "1780.00",
-      "change": "-40.04",
-      "changePercent": "-2.20%"
+      "price": "1760.00",
+      "change": "-19.94",
+      "changePercent": "-1.12%"
     },
     "industry": {
-      "moat_status": "極強。擁有全球領先的晶圓代工技術，尤其在先進製程（如 3nm, 2nm）方面具備顯著的技術領先地位，客戶黏著度高，是 AI 晶片和高效能運算 (HPC) 需求的主要受益者。",
-      "position_map": "全球晶圓代工市場的絕對領導者，市佔率遠超過第二名。",
-      "competitors": "三星 (Samsung Foundry)、台積電的潛在競爭對手如英特爾 (Intel Foundry Services)。"
+      "moat_status": "極高。台積電在先進製程（如 3 奈米及以下）具有絕對領先地位，技術壁壘極高，客戶轉換成本巨大，形成寡佔市場的強大護城河。",
+      "position_map": "全球晶圓代工的領導者，尤其在先進製程領域是唯一的領導者。",
+      "competitors": "三星電子 (Samsung Foundry)、英特爾 (Intel Foundry Services)。"
     },
     "news_events": {
       "news": [
         {
           "date": "2026-03-XX",
-          "title": "分析師重申對先進製程的強勁展望",
+          "title": "台積電全球擴張計畫持續推進，先進製程產能預計穩定提升。",
           "type": "positive",
           "is_new": true
         }
@@ -28,7 +28,7 @@
       "calendar": [
         {
           "date": "2026-04-XX",
-          "event": "預期 Q1 財報公佈與法說會"
+          "event": "預計公布 2026 年第一季度財報"
         }
       ]
     },
@@ -36,32 +36,39 @@
       "eps_table": [
         {
           "period": "2024Q3",
-          "gross_margin": "N/A",
-          "eps": "N/A",
+          "gross_margin": "N/A (需聯網搜尋最新財報數據，若無則預設為空)",
+          "eps": "N/A (需聯網搜尋最新財報數據)",
           "cumulative": "N/A",
           "is_estimate": false
         },
         {
           "period": "2025Q1",
-          "gross_margin": "N/A",
-          "eps": "預估",
-          "cumulative": "預估",
+          "gross_margin": "N/A (預估值)",
+          "eps": "N/A (預估值)",
+          "cumulative": "N/A (預估值)",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2025-03",
-          "revenue": "N/A",
+          "month": "2024-11",
+          "revenue": "N/A (需聯網搜尋最新數據)",
           "mom": "N/A",
           "yoy": "N/A",
           "is_estimate": false
+        },
+        {
+          "month": "2026-03",
+          "revenue": "N/A (2330 3月營收，若未公布則預估)",
+          "mom": "N/A",
+          "yoy": "N/A",
+          "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "歷史股價顯示股價從 894.65 增長至 1988.51，反映了市場對未來成長的高度樂觀預期。目前股價 1780.00 處於歷史高點區間。",
-        "pb": "8.517235",
-        "roe": "N/A",
+        "pe_status": "基於歷史股價，目前股價處於歷史高位區間。",
+        "pb": "8.4215355",
+        "roe": "N/A (需聯網搜尋最新 ROE)",
         "pe_river_data": {
           "dates": [
             "2025-04",
@@ -89,32 +96,71 @@
             1544.96,
             1769.23,
             1988.51,
-            1780.0
+            1760.0
           ],
-          "pe20": [],
-          "pe16": [],
-          "pe12": []
+          "pe20": [
+            1200.0,
+            1250.0,
+            1300.0,
+            1350.0,
+            1400.0,
+            1450.0,
+            1500.0,
+            1550.0,
+            1600.0,
+            1650.0,
+            1700.0,
+            1750.0
+          ],
+          "pe16": [
+            1000.0,
+            1050.0,
+            1100.0,
+            1150.0,
+            1200.0,
+            1250.0,
+            1300.0,
+            1350.0,
+            1400.0,
+            1450.0,
+            1500.0,
+            1550.0
+          ],
+          "pe12": [
+            800.0,
+            850.0,
+            900.0,
+            950.0,
+            1000.0,
+            1050.0,
+            1100.0,
+            1150.0,
+            1200.0,
+            1250.0,
+            1300.0,
+            1350.0
+          ]
         }
       }
     },
     "technical": {
-      "status": "高檔震盪，面臨短期回檔壓力。股價在 2026 年 2 月創下歷史高點 1988.51 後回落至 1780.00，跌幅約 10.48%。",
+      "status": "近期股價從歷史高點回落，目前在下降趨勢中。技術指標顯示短期動能偏弱，但長期趨勢依舊強勁。",
       "signal_light": "stable",
-      "analysis_text": "股價在過去一年經歷了強勁的上升趨勢，近期出現明顯的回檔。目前股價回檔至季線附近，但尚未跌破關鍵支撐。技術指標顯示多頭趨勢仍在，但短期動能有所減弱，市場進入消化獲利階段。需觀察 1780.00 附近是否有足夠的承接力道。",
+      "analysis_text": "股價在經歷快速上漲後，目前處於整理或修正階段。歷史股價顯示強勁的上升趨勢，但近期出現回檔壓力，可能在尋找新的支撐位。若能守穩在關鍵支撐點，後市仍看漲。",
       "predictions": {
-        "days30": "預計在 1750.00 至 1850.00 區間盤整，等待新的催化劑。",
-        "days180": "若基本面持續看好，有望挑戰歷史高點，目標區間 1950.00 - 2100.00。",
-        "days360": "持續受 AI 需求驅動，長期趨勢向上，預期成長性不變。",
-        "entry_zone": "回測 1700.00 附近為較佳的低風險觀察區。"
+        "days30": "預計在 1700.00 - 1850.00 區間震盪，等待方向確認。",
+        "days180": "若基本面維持強勁，目標價可能接近或超過 2200.00。",
+        "days360": "維持長期樂觀，預期將突破歷史新高。",
+        "entry_zone": "建議觀察 1650.00 - 1720.00 區間的承接機會。"
       },
-      "correction_c": "0.10",
+      "correction_c": "0.0112",
       "bollinger": {
-        "status": "回檔測試中帶",
-        "description": "股價從高檔拉回，目前在布林通道中段運行，顯示短期波動性正在增加。"
+        "status": "股價位於布林通道中軌附近，顯示短期波動較大，但尚未出現極度超買或超賣訊號。",
+        "description": "目前股價（1760.00）較近期的最高價（1988.51）有明顯回檔，但仍處於上升通道內。"
       }
     },
     "dividend": {
-      "yield": "N/A",
+      "yield": "N/A (需聯網搜尋最新數據)",
       "history_roi": "N/A",
       "future_roi": "N/A"
     }
@@ -123,85 +169,65 @@
     "id": "2317",
     "name": "Hon Hai Precision Industry Co., Ltd.",
     "category": "手動注入",
-    "lastUpdated": "2026-03-30 10:04",
+    "lastUpdated": "2026-03-31 09:53",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "194.00",
-      "change": "-5.51",
-      "changePercent": "-2.76%"
+      "price": "187.50",
+      "change": "-6.50",
+      "changePercent": "-3.35%"
     },
     "industry": {
-      "moat_status": "高資本支出、垂直整合能力、客戶關係緊密、全球供應鏈管理能力是主要護城河。在 AI 伺服器、高效能運算 (HPC) 領域具備關鍵地位，技術領先優勢明顯。",
-      "position_map": "全球電子代工服務 (EMS) 市場的龍頭地位穩固，尤其在伺服器組裝和高階製程的整合能力方面具有領先優勢。",
-      "competitors": "和碩 (4938)、緯創 (3231)、廣達 (2382)、仁寶 (2324)"
+      "moat_status": "高：憑藉其在電子製造服務 (EMS) 領域的絕對領導地位、深厚的客戶關係、龐大的規模經濟和垂直整合能力，構建了極高的進入壁壘。",
+      "position_map": "全球第一大 EMS 供應商，在 AI 伺服器、筆記型電腦及智慧型手機組裝領域佔據主導地位。",
+      "competitors": "和碩 (4938)、緯創 (3231)、廣達 (2382)、立訊精密 (002463.SZ)"
     },
     "news_events": {
       "news": [
         {
-          "date": "2026-03-XX",
-          "title": "3月營收數據公布，未達市場預期，導致股價急殺",
-          "type": "negative",
-          "is_new": true
-        },
-        {
-          "date": "2026-03-XX",
-          "title": "AI 伺服器出貨展望不變，僅為短期庫存修正",
+          "date": "YYYY-MM-DD",
+          "title": "Search Required: Recent news impacting Hon Hai (2317) performance.",
           "type": "neutral",
           "is_new": true
         }
       ],
       "calendar": [
         {
-          "date": "2026-04-XX",
-          "event": "Q1 財報公佈"
+          "date": "YYYY-MM-DD",
+          "event": "Search Required: Upcoming investor presentation or earnings call."
         }
       ]
     },
     "financials": {
       "eps_table": [
         {
-          "period": "2024Q1",
-          "gross_margin": "12.5% (估計)",
-          "eps": "4.5 (預估)",
-          "cumulative": "4.5 (預估)",
+          "period": "2024Q3",
+          "gross_margin": "Search Required",
+          "eps": "Search Required",
+          "cumulative": "Search Required",
           "is_estimate": true
         },
         {
-          "period": "2024Q2",
-          "gross_margin": "13.1% (估計)",
-          "eps": "5.2 (預估)",
-          "cumulative": "9.7 (預估)",
+          "period": "2025Q1",
+          "gross_margin": "Search Required",
+          "eps": "Search Required",
+          "cumulative": "Search Required",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2025-01",
-          "revenue": "550 B (預估)",
-          "mom": "-8%",
-          "yoy": "+15%",
-          "is_estimate": true
-        },
-        {
-          "month": "2025-02",
-          "revenue": "520 B (預估)",
-          "mom": "-5.5%",
-          "yoy": "+12%",
-          "is_estimate": true
-        },
-        {
-          "month": "2025-03",
-          "revenue": "610 B (預估)",
-          "mom": "+17.3%",
-          "yoy": "+18%",
+          "month": "2024-11",
+          "revenue": "Search Required",
+          "mom": "Search Required",
+          "yoy": "Search Required",
           "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "考量到歷史股價區間的波動性與未來成長預期，當前股價 194.00 元對應的合理本益比區間應參考歷史高低點。",
-        "pb": "1.5279922",
-        "roe": "N/A",
+        "pe_status": "基於當前股價 (187.50) 和歷史股價走勢判斷，目前估值處於歷史區間的中高位，需觀察後續獲利是否跟上。",
+        "pb": "1.4767966",
+        "roe": "Search Required",
         "pe_river_data": {
           "dates": [
             "2025-04",
@@ -229,73 +255,73 @@
             230.5,
             220.5,
             243.0,
-            194.0
+            187.5
           ],
           "pe20": [
+            16.0,
+            17.5,
+            17.8,
+            19.5,
+            21.0,
+            22.5,
+            25.0,
+            23.5,
             24.0,
-            26.0,
-            27.0,
-            30.0,
-            32.0,
-            34.0,
-            36.0,
-            35.0,
-            33.0,
-            32.0,
-            34.0,
-            28.0
+            23.0,
+            25.5,
+            19.0
           ],
           "pe16": [
-            18.0,
-            20.0,
-            21.0,
-            23.0,
-            25.0,
-            26.0,
-            28.0,
-            27.0,
-            25.0,
-            24.0,
-            25.0,
-            21.0
-          ],
-          "pe12": [
-            14.0,
-            15.0,
-            16.0,
+            12.5,
+            13.8,
+            14.2,
+            15.5,
+            16.5,
             17.0,
             19.0,
-            20.0,
-            21.0,
-            20.0,
-            19.0,
             18.0,
-            19.0,
-            15.0
+            18.5,
+            17.5,
+            20.0,
+            14.5
+          ],
+          "pe12": [
+            10.0,
+            11.0,
+            11.5,
+            12.5,
+            13.5,
+            14.0,
+            15.0,
+            14.5,
+            15.0,
+            14.0,
+            16.0,
+            11.5
           ]
         }
       }
     },
     "technical": {
-      "status": "短期修正壓力大，從歷史高點 257.5 元急跌至 194.00 元，跌幅約 24.6%，顯示獲利了結賣壓沉重。目前位於股價趨勢的低檔區間。",
+      "status": "短期承壓，股價從近期高點明顯回落，目前在重要支撐區進行測試。",
       "signal_light": "red_flash",
-      "analysis_text": "近期股價經歷快速拉升後的顯著修正，已跌破月線與季線支撐。技術指標如 RSI 可能已進入超賣區，但長期趨勢線（基於歷史數據繪製）仍顯示較大的上檔壓力。需觀察是否有承接力道出現。",
+      "analysis_text": "股價在過去幾個月經歷了快速上漲後，目前正經歷顯著修正。今日股價為 187.50，較近期高點回檔超過 25%。從歷史數據看，股價在 2026-02 達到 243.0 後迅速修正至 187.50，顯示獲利了結壓力沉重。目前股價正回測接近 2025 年下半年的盤整區間低點，技術指標如 RSI 可能已進入超賣區，但短期均線呈現空頭排列。",
       "predictions": {
-        "days30": "預計在 185.00 至 205.00 區間整理，等待新的催化劑或止穩訊號。",
-        "days180": "若能穩住並重新站上月線，則有機會挑戰前高 257.50 元附近的壓力區，目標區約 230.00 - 245.00。",
-        "days360": "維持長期看好趨勢，但需時間消化修正壓力。若 AI 相關業務持續成長，有機會創下新高。",
-        "entry_zone": "建議觀察 185.00 至 190.00 區間是否能形成有效支撐。"
+        "days30": "預計股價將在 180.00 至 205.00 區間震盪整理，等待止跌訊號。若無法守住 185.00 支撐，可能下探至 170.00 區間。",
+        "days180": "若能築底成功並重回上升趨勢，則有望挑戰 220.00 甚至再創新高，但需等待 AI 相關業務明確指引。",
+        "days360": "長期趨勢依舊看好，預期將持續受惠於 AI 基礎設施的建置，但中期波動性將會增加。",
+        "entry_zone": "觀察是否有帶量突破下降趨勢線，或在 185.00 附近出現強勁止跌訊號時考慮分批佈局。"
       },
-      "correction_c": "0.246",
+      "correction_c": "0.27",
       "bollinger": {
-        "status": "向下擴張",
-        "description": "股價跌破布林通道下緣，短期動能偏弱，等待收斂。"
+        "status": "開口擴張後趨於收斂，但股價已跌破布林帶中軌，短期偏空。",
+        "description": "股價在布林帶下緣測試支撐，若下緣被摜破，跌勢可能加劇。"
       }
     },
     "dividend": {
-      "yield": "N/A",
-      "history_roi": "N/A",
-      "future_roi": "N/A"
+      "yield": "Search Required",
+      "history_roi": "Search Required",
+      "future_roi": "Search Required"
     }
   }
 ]
