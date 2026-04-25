@@ -3,7 +3,7 @@
     "id": "2330",
     "name": "Taiwan Semiconductor Manufacturing Company Limited",
     "category": "手動注入",
-    "lastUpdated": "2026-04-24 10:14",
+    "lastUpdated": "2026-04-25 09:41",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
@@ -12,15 +12,15 @@
       "changePercent": "+5.05%"
     },
     "industry": {
-      "moat_status": "極強 (Extreme)，擁有先進封裝 CoWoS 與 2nm 製程絕對壟斷權。",
-      "position_map": "全球晶圓代工市佔率突破 60%，處於技術領先的絕對核心。",
-      "competitors": "Samsung (良率挑戰), Intel (製造部門轉型困境), GlobalFoundries (成熟製程競爭)"
+      "moat_status": "極強：擁有全球領先的 2nm 與先進封裝技術 (CoWoS)，具備資本密集與技術密集雙重護城河，議價能力極高。",
+      "position_map": "晶圓代工市佔率全球龍頭，佔據 AI 加速器與高效能運算 (HPC) 核心供應鏈地位。",
+      "competitors": "Samsung Foundry (製程落後), Intel Foundry Services (產能整合中), GlobalFoundries (成熟製程為主)"
     },
     "news_events": {
       "news": [
         {
           "date": "2026-04-10",
-          "title": "TSMC 2nm 產能良率超乎預期，主力客戶訂單滿載",
+          "title": "TSMC 2nm 產能供不應求，主要客戶 Apple 與 Nvidia 預訂至 2027",
           "type": "positive",
           "is_new": true
         }
@@ -38,37 +38,30 @@
           "period": "2024Q3",
           "gross_margin": "57.8%",
           "eps": "12.54",
-          "cumulative": "30.80",
+          "cumulative": "30.25",
           "is_estimate": false
         },
         {
-          "period": "2025Q1",
-          "gross_margin": "58.2%",
-          "eps": "14.50",
-          "cumulative": "14.50",
+          "period": "2026Q1",
+          "gross_margin": "59.2%",
+          "eps": "18.45",
+          "cumulative": "18.45",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2025-12",
-          "revenue": "320.5B",
-          "mom": "+4.2%",
-          "yoy": "+28.5%",
+          "month": "2026-03",
+          "revenue": "260.5B TWD",
+          "mom": "5.2%",
+          "yoy": "28.5%",
           "is_estimate": false
-        },
-        {
-          "month": "2026-04",
-          "revenue": "355.2B",
-          "mom": "+3.8%",
-          "yoy": "+32.1%",
-          "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "當前 PE 約 32.5x，處於歷史區間高檔。",
+        "pe_status": "目前本益比約 32x，反映 AI 高成長溢價，處於歷史高位區間。",
         "pb": "9.61856",
-        "roe": "34.2%",
+        "roe": "34.5%",
         "pe_river_data": {
           "dates": [
             "2025-05",
@@ -99,56 +92,50 @@
             2185.0
           ],
           "pe20": [
-            780.0,
-            890.0,
-            1100.0,
-            1350.0,
-            1500.0
+            750.2,
+            980.5,
+            1350.0
           ],
           "pe16": [
-            624.0,
-            712.0,
-            880.0,
-            1080.0,
-            1200.0
+            600.5,
+            784.4,
+            1080.0
           ],
           "pe12": [
-            468.0,
-            534.0,
-            660.0,
-            810.0,
-            900.0
+            450.1,
+            588.3,
+            810.0
           ]
         }
       }
     },
     "technical": {
-      "status": "強勢多頭突破，短期乖離過大。",
-      "signal_light": "red_flash",
-      "analysis_text": "股價突破歷史新高 2185.00，成交量配合放大，短期呈現強勢多頭排列，但 RSI 指標進入超買區。",
+      "status": "強勢多頭格局，股價突破歷史新高，成交量能配合穩健。",
+      "signal_light": "green_flash",
+      "analysis_text": "技術面上，股價連月強攻突破 2000 元整數大關，乖離率雖高但受惠 AI 需求支撐，短線量能未衰竭前維持多方趨勢。",
       "predictions": {
-        "days30": "2250.0",
-        "days180": "2580.0",
-        "days360": "2950.0",
-        "entry_zone": "2000.0-2050.0"
+        "days30": "2250.00",
+        "days180": "2580.00",
+        "days360": "2950.00",
+        "entry_zone": "2050.00-2100.00"
       },
       "correction_c": "0.12",
       "bollinger": {
-        "status": "頂部擠壓",
-        "description": "股價已觸及布林通道上軌，預期短期內將有技術性震盪整理。"
+        "status": "上軌擴張",
+        "description": "股價站上布林通道上軌，多頭情緒極致強烈，需留意指標超買後的技術性修正。"
       }
     },
     "dividend": {
-      "yield": "1.25%",
-      "history_roi": "15.2% (年化)",
-      "future_roi": "18.5% (資本利得預期)"
+      "yield": "0.75%",
+      "history_roi": "12.4%",
+      "future_roi": "15.8%"
     }
   },
   {
     "id": "2317",
     "name": "Hon Hai Precision Industry Co., Ltd.",
     "category": "手動注入",
-    "lastUpdated": "2026-04-24 10:14",
+    "lastUpdated": "2026-04-25 09:43",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
@@ -157,23 +144,23 @@
       "changePercent": "-1.56%"
     },
     "industry": {
-      "moat_status": "強大。鴻海擁有全球規模經濟、垂直整合能力及AI伺服器供應鏈關鍵話語權（GB200獨家供應地位），轉換成本高。",
-      "position_map": "電子代工製造服務 (EMS) 龍頭，轉型 AI 解決方案供應商。",
-      "competitors": "廣達、緯創、和碩、英業達"
+      "moat_status": "強大。鴻海擁有全球電子代工製造服務 (EMS) 的規模經濟優勢、垂直整合的供應鏈管理能力 (從零件到系統)，以及在 AI 伺服器供應鏈中與 NVIDIA 的緊密合作關係。",
+      "position_map": "全球最大的電子製造服務提供商，正積極轉型至『3+3』領域 (電動車、數位健康、機器人與人工智慧)。",
+      "competitors": "廣達 (Quanta)、緯創 (Wistron)、和碩 (Pegatron)、立訊精密 (Luxshare)。"
     },
     "news_events": {
       "news": [
         {
           "date": "2026-04-15",
-          "title": "鴻海 GB200 伺服器出貨放量，第二季營收展望樂觀",
+          "title": "鴻海積極佈局 AI 伺服器產能擴張",
           "type": "positive",
           "is_new": true
         }
       ],
       "calendar": [
         {
-          "date": "2026-05-15",
-          "event": "2026Q1 法說會暨財報公布"
+          "date": "2026-05-12",
+          "event": "2026Q1 財報發佈"
         }
       ]
     },
@@ -181,46 +168,39 @@
       "eps_table": [
         {
           "period": "2024Q3",
-          "gross_margin": "6.65%",
+          "gross_margin": "6.35%",
           "eps": "3.55",
           "cumulative": "8.03",
           "is_estimate": false
         },
         {
           "period": "2024Q4",
-          "gross_margin": "6.70%",
-          "eps": "4.52",
-          "cumulative": "12.55",
+          "gross_margin": "6.50%",
+          "eps": "3.80",
+          "cumulative": "11.83",
           "is_estimate": false
         },
         {
           "period": "2025Q1",
-          "gross_margin": "6.50%",
-          "eps": "3.80",
-          "cumulative": "3.80",
+          "gross_margin": "6.20%",
+          "eps": "2.80",
+          "cumulative": "2.80",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
-          "month": "2026-03",
-          "revenue": "4475億",
-          "mom": "-11.3%",
-          "yoy": "+1.5%",
-          "is_estimate": false
-        },
-        {
           "month": "2026-04",
-          "revenue": "4750億",
-          "mom": "+6.1%",
-          "yoy": "+2.2%",
+          "revenue": "5100億",
+          "mom": "-4.2%",
+          "yoy": "2.5%",
           "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "合理偏低，目前 PE 約 12-14 倍，低於 AI 伺服器同業平均。",
+        "pe_status": "目前股價 221.50，處於歷史 PE 區間中位數偏高位置，估值合理。",
         "pb": "1.7445891",
-        "roe": "14.2%",
+        "roe": "12.8%",
         "pe_river_data": {
           "dates": [
             "2025-05",
@@ -251,49 +231,49 @@
             221.5
           ],
           "pe20": [
-            225,
-            235,
-            245,
-            255,
-            260
+            180.0,
+            195.0,
+            220.0,
+            235.0,
+            240.0
           ],
           "pe16": [
-            180,
-            188,
-            196,
-            204,
-            208
+            144.0,
+            156.0,
+            176.0,
+            188.0,
+            192.0
           ],
           "pe12": [
-            135,
-            141,
-            147,
-            153,
-            156
+            108.0,
+            117.0,
+            132.0,
+            141.0,
+            144.0
           ]
         }
       }
     },
     "technical": {
-      "status": "箱型整理後回調，需觀察 210 元支撐力度。",
+      "status": "震盪整理，短期均線糾結。",
       "signal_light": "stable",
-      "analysis_text": "股價自 3 月份高點 243 回落，目前測試季線支撐。MACD 指標綠柱縮短，顯示下跌動能減弱，量能萎縮後有望出現築底信號。",
+      "analysis_text": "股價在經歷 3 月的修正後於 220 附近尋求支撐。月線顯示股價正嘗試站回季線，成交量需放大以突破上方壓力區 (235 元)。",
       "predictions": {
         "days30": "215-235",
         "days180": "200-260",
-        "days360": "220-300",
-        "entry_zone": "205-215"
+        "days360": "210-290",
+        "entry_zone": "210-218"
       },
-      "correction_c": "0.12",
+      "correction_c": "0.18",
       "bollinger": {
-        "status": "收斂中",
-        "description": "布林通道開口縮窄，暗示即將選擇變盤方向，建議留意量能變化。"
+        "status": "收口",
+        "description": "布林通道開口收窄，暗示短期內將選擇方向，中軸線約在 222 元處。"
       }
     },
     "dividend": {
-      "yield": "2.6%",
-      "history_roi": "穩定配息，殖利率維持在 2.5%-3% 區間。",
-      "future_roi": "預計維持穩健股利政策，隨獲利提升總金額有機會成長。"
+      "yield": "2.45%",
+      "history_roi": "穩定配息，近五年殖利率介於 2-3.5% 之間。",
+      "future_roi": "預估配息率將隨獲利成長微幅增加。"
     }
   }
 ]
