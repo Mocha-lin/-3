@@ -3,32 +3,36 @@
     "id": "2330",
     "name": "Taiwan Semiconductor Manufacturing Company Limited",
     "category": "手動注入",
-    "lastUpdated": "2026-05-14 11:06",
+    "lastUpdated": "2026-05-15 11:10",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "2270.00",
-      "change": "+49.95",
-      "changePercent": "+2.25%"
+      "price": "2265.00",
+      "change": "-4.99",
+      "changePercent": "-0.22%"
     },
     "industry": {
-      "moat_status": "極強 (Strong Moat)，擁有製程領先與生態系定價權。",
-      "position_map": "半導體晶圓代工龍頭，全球先進製程(3nm/2nm)市場市佔率超過 90%。",
-      "competitors": "Samsung Foundry (製程良率差距拉大), Intel Foundry (轉型陣痛期)"
+      "moat_status": "極強 (Extreme Moat)，掌握全球 90% 以上先進製程產能，擁有不可替代的生態系統整合能力與良率優勢。",
+      "position_map": "半導體製造龍頭，位於技術與產能供應鏈核心。",
+      "competitors": "Intel (IDM 2.0 轉型中), Samsung Foundry (良率與功耗瓶頸)"
     },
     "news_events": {
       "news": [
         {
           "date": "2026-05-15",
-          "title": "台積電 2nm 量產進度提前，AI 晶片訂單爆滿",
+          "title": "TSMC 2nm 良率超預期，各大廠產能預訂至 2027",
           "type": "positive",
           "is_new": true
         }
       ],
       "calendar": [
         {
-          "date": "2026-07-10",
-          "event": "2026 Q2 法說會"
+          "date": "2026-06-10",
+          "event": "股東常會"
+        },
+        {
+          "date": "2026-07-15",
+          "event": "Q2 法說會"
         }
       ]
     },
@@ -36,31 +40,31 @@
       "eps_table": [
         {
           "period": "2024Q4",
-          "gross_margin": "54.0%",
-          "eps": "14.88",
+          "gross_margin": "56.0%",
+          "eps": "12.54",
           "cumulative": "42.15",
           "is_estimate": false
         },
         {
           "period": "2026Q1",
-          "gross_margin": "58.2%",
-          "eps": "28.50",
-          "cumulative": "28.50",
+          "gross_margin": "58.5%",
+          "eps": "18.20",
+          "cumulative": "18.20",
           "is_estimate": true
         }
       ],
       "revenue_trend": [
         {
           "month": "2026-05",
-          "revenue": "315.2B TWD",
-          "mom": "5.2%",
+          "revenue": "285.5B TWD",
+          "mom": "4.2%",
           "yoy": "38.5%",
           "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "目前 PE 約 28.5x，處於歷史高檔區間上緣",
-        "pb": "9.992737",
+        "pe_status": "目前 PE 約為 32x，處於歷史高位區間，反映 AI 晶片強勁成長溢價。",
+        "pb": "9.970726",
         "roe": "34.5%",
         "pe_river_data": {
           "dates": [
@@ -89,84 +93,84 @@
             1988.51,
             1760.0,
             2135.0,
-            2270.0
+            2265.0
           ],
           "pe20": [
-            850.0,
-            950.0,
-            1100.0,
-            1300.0,
-            1600.0
+            850,
+            950,
+            1100,
+            1250,
+            1400
           ],
           "pe16": [
-            680.0,
-            760.0,
-            880.0,
-            1040.0,
-            1280.0
+            700,
+            800,
+            900,
+            1050,
+            1150
           ],
           "pe12": [
-            510.0,
-            570.0,
-            660.0,
-            780.0,
-            960.0
+            550,
+            650,
+            750,
+            850,
+            950
           ]
         }
       }
     },
     "technical": {
-      "status": "強勢多頭格局，價格創歷史新高",
-      "signal_light": "green_flash",
-      "analysis_text": "股價突破 2200 心理關卡，週線級別量能穩定放大，均線呈現完美多頭排列。",
+      "status": "強勢多頭格局，均線多頭排列且乖離率擴大。",
+      "signal_light": "red_flash",
+      "analysis_text": "股價突破 2200 心理關卡，顯示買盤極度積極。短期受惠於 CoWoS 產能吃緊與 AI 推論需求爆發，技術指標 RSI 進入超買區，需留意回檔修正風險。",
       "predictions": {
         "days30": "2350.00",
-        "days180": "2680.00",
-        "days360": "3100.00",
-        "entry_zone": "2150.00 - 2200.00"
+        "days180": "2600.00",
+        "days360": "2950.00",
+        "entry_zone": "2050.00-2120.00"
       },
       "correction_c": "0.12",
       "bollinger": {
-        "status": "多頭發散",
-        "description": "目前價格觸及布林通道上軌，短期存在修正壓力，需觀察是否跌破 20 日均線。"
+        "status": "頂部通道擴張",
+        "description": "股價運行於布林通道上軌之外，建議分批減碼或採取移動停利策略。"
       }
     },
     "dividend": {
-      "yield": "1.35%",
-      "history_roi": "12.8% (CAGR)",
-      "future_roi": "15.0% (估)"
+      "yield": "1.45%",
+      "history_roi": "12.8% (三年平均)",
+      "future_roi": "15.0% (預期隨獲利成長上調)"
     }
   },
   {
     "id": "2317",
     "name": "Hon Hai Precision Industry Co., Ltd.",
     "category": "手動注入",
-    "lastUpdated": "2026-05-14 11:06",
+    "lastUpdated": "2026-05-15 11:10",
     "ai_model": "gemini-flash-lite-latest",
     "memo": "",
     "basicInfo": {
-      "price": "244.50",
-      "change": "-6.50",
-      "changePercent": "-2.59%"
+      "price": "248.50",
+      "change": "+4.01",
+      "changePercent": "+1.64%"
     },
     "industry": {
-      "moat_status": "強大。具備全球規模經濟、垂直整合供應鏈以及在 AI 伺服器供應鏈（GB200）的核心製造地位。",
-      "position_map": "EMS 龍頭，現正積極轉型為 AI 系統整合與雲端解決方案供應商。",
-      "competitors": "廣達 (Quanta), 緯創 (Wistron), 英業達 (Inventec), 和碩 (Pegatron)"
+      "moat_status": "強大的全球供應鏈整合能力與龐大的資本支出門檻，使其在 AI 伺服器代工市場具備不可替代的規模優勢。",
+      "position_map": "EMS 龍頭，轉型伺服器與車用領域，垂直整合全球化佈局。",
+      "competitors": "廣達 (Quanta), 緯創 (Wistron), 英業達 (Inventec)"
     },
     "news_events": {
       "news": [
         {
           "date": "2026-05-15",
-          "title": "鴻海積極佈局 AI 伺服器產能，訂單能見度延續至年底",
+          "title": "鴻海 AI 伺服器營收占比持續提升，GB200 出貨順暢",
           "type": "positive",
           "is_new": true
         }
       ],
       "calendar": [
         {
-          "date": "2026-06-20",
-          "event": "鴻海年度股東大會"
+          "date": "2026-06-10",
+          "event": "鴻海股東會"
         }
       ]
     },
@@ -190,22 +194,15 @@
       "revenue_trend": [
         {
           "month": "2025-04",
-          "revenue": "5108億",
-          "mom": "-4.5%",
-          "yoy": "12.2%",
+          "revenue": "5106億",
+          "mom": "-4.2%",
+          "yoy": "12.5%",
           "is_estimate": false
-        },
-        {
-          "month": "2025-05",
-          "revenue": "5250億",
-          "mom": "2.7%",
-          "yoy": "13.5%",
-          "is_estimate": true
         }
       ],
       "valuation": {
-        "pe_status": "合理偏高",
-        "pb": "1.9257427",
+        "pe_status": "目前本益比約 18-20 倍，處於歷史區間中上緣。",
+        "pb": "1.9572477",
         "roe": "14.2%",
         "pe_river_data": {
           "dates": [
@@ -234,52 +231,52 @@
             243.0,
             187.5,
             219.5,
-            244.5
+            248.5
           ],
           "pe20": [
-            180.2,
-            195.4,
-            210.8,
-            225.0,
-            240.2
+            162.0,
+            185.0,
+            205.0,
+            220.0,
+            235.0
           ],
           "pe16": [
-            144.1,
-            156.3,
-            168.6,
-            180.0,
-            192.1
+            130.0,
+            148.0,
+            164.0,
+            176.0,
+            188.0
           ],
           "pe12": [
-            108.1,
-            117.2,
-            126.5,
-            135.0,
-            144.1
+            97.5,
+            111.0,
+            123.0,
+            132.0,
+            141.0
           ]
         }
       }
     },
     "technical": {
-      "status": "強勢反彈後回測壓力",
-      "signal_light": "stable",
-      "analysis_text": "股價自 3 月低點 187.5 強勢反彈至 244.5，目前受制於前高壓力區，量能若無法持續放大，將進入震盪整理。",
+      "status": "強勢突破整理區間，均線呈現多頭排列。",
+      "signal_light": "red_flash",
+      "analysis_text": "股價站穩所有均線，近期在 AI 需求支撐下帶量突破，技術指標轉強，惟短線乖離率略高，需留意獲利了結賣壓。",
       "predictions": {
-        "days30": "235-255",
-        "days180": "220-280",
-        "days360": "250-320",
-        "entry_zone": "220-230"
+        "days30": "260.0",
+        "days180": "285.0",
+        "days360": "320.0",
+        "entry_zone": "235-242"
       },
       "correction_c": "0.12",
       "bollinger": {
-        "status": "上軌受阻",
-        "description": "股價已觸碰布林通道上軌，指標進入過熱區，短期需提防技術性修正。"
+        "status": "upper_band_touch",
+        "description": "股價觸及布林通道上軌，顯示多方強勁但短線進入過熱區。"
       }
     },
     "dividend": {
-      "yield": "2.25%",
-      "history_roi": "約 5-7% 年化成長",
-      "future_roi": "預估配息穩定成長，殖利率維持在 2-2.5% 水準"
+      "yield": "2.15%",
+      "history_roi": "5年平均殖利率約 2.5-3.0%",
+      "future_roi": "預估維持每股配發 5.5-6.0 元水準"
     }
   }
 ]
